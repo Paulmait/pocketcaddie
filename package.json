@@ -1,0 +1,31 @@
+{
+  "name": "pocket-caddie-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Fix your slice fast - AI-powered golf swing analysis",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "mobile": "npm run start --workspace=apps/mobile",
+    "mobile:ios": "npm run ios --workspace=apps/mobile",
+    "mobile:android": "npm run android --workspace=apps/mobile",
+    "gen:icons": "npx ts-node scripts/gen-icons.ts",
+    "gen:illustrations": "npx ts-node scripts/gen-illustrations.ts",
+    "gen:screenshots": "npx ts-node scripts/gen-screenshots.ts",
+    "gen:all": "npm run gen:icons && npm run gen:illustrations && npm run gen:screenshots",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

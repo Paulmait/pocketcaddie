@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "Pocket Caddie AI",
+    "slug": "pocket-caddie-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "pocketcaddie",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B0F14"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.cienrios.pocketcaddieai",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Pocket Caddie AI needs camera access to record your golf swing for analysis.",
+        "NSPhotoLibraryUsageDescription": "Pocket Caddie AI needs photo library access to select swing videos for analysis.",
+        "NSMicrophoneUsageDescription": "Pocket Caddie AI needs microphone access when recording swing videos."
+      },
+      "usesAppleSignIn": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0B0F14"
+      },
+      "package": "com.cienrios.pocketcaddieai"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-apple-authentication",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Pocket Caddie AI to access your camera to record swing videos."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Pocket Caddie AI to access your photos to select swing videos."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
+      }
+    }
+  }
+}
