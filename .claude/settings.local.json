@@ -4,7 +4,11 @@
       "Bash(mkdir:*)",
       "Bash(npx create-expo-app@latest:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nInitial commit: Pocket Caddie AI - Fix My Slice Fast\n\nComplete MVP scaffold including:\n\n- Expo React Native app structure with TypeScript\n- Dark mode design system \\(premium sports tech aesthetic\\)\n- All core screens: Onboarding, Auth, Home, Upload, Processing, Results, Paywall, Settings\n- Supabase integration \\(Auth, Storage, Database\\)\n- RevenueCat subscription infrastructure \\($8.99/mo, $59.99/yr with 7-day trial\\)\n- AI swing analysis system with slice-specific prompts\n- App Store compliant paywall with all required disclosures\n- In-app account deletion \\(Apple requirement\\)\n- Privacy-first design with automatic video deletion\n- Legal documents \\(Privacy Policy, Terms, EULA\\) for Cien Rios LLC\n- App Store review documentation\n- Asset generation scripts for icons and screenshots\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)"
     ]
   }
 }

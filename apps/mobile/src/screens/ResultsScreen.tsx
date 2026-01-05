@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,8 @@ import { ChecklistItem } from '../components/ChecklistItem';
 import { ProgressRing } from '../components/ProgressRing';
 import { useAppStore } from '../store/useAppStore';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import { useRating } from '../hooks/useRatingPrompt';
+import { trackEvent, AnalyticsEvents } from '../services/analytics';
 
 type ResultsScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Results'>;
@@ -34,10 +36,24 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
 }) => {
   const { analysisId } = route.params;
   const viewShotRef = useRef<ViewShot>(null);
+  const { trackAnalysisComplete, trackChallengeItemComplete } = useRating();
 
   const { analyses, currentAnalysis, updateChallengeProgress } = useAppStore();
 
   const analysis = currentAnalysis || analyses.find((a) => a.id === analysisId);
+
+  // Track results viewed and trigger rating prompt for high confidence
+  useEffect(() => {
+    if (analysis) {
+      trackEvent(AnalyticsEvents.RESULTS_VIEWED, {
+        confidence: analysis.rootCause.confidence,
+        root_cause: analysis.rootCause.title,
+      });
+
+      // Track for rating prompt
+      trackAnalysisComplete(analysis.rootCause.confidence);
+    }
+  }, [analysis?.id]);
 
   if (!analysis) {
     return (
@@ -56,7 +72,27 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
   const progress = completedCount / challenge.completedItems.length;
 
   const handleToggleChecklistItem = (index: number) => {
-    updateChallengeProgress(analysis.id, index, !challenge.completedItems[index]);
+    const newCompleted = !challenge.completedItems[index];
+    updateChallengeProgress(analysis.id, index, newCompleted);
+
+    // Track for analytics and rating prompt
+    if (newCompleted) {
+      const newCompletedCount = completedCount + 1;
+      trackEvent(AnalyticsEvents.CHALLENGE_ITEM_COMPLETED, {
+        item_index: index,
+        total_completed: newCompletedCount,
+      });
+
+      // Track for rating prompt (may trigger after 5+ items)
+      trackChallengeItemComplete(newCompletedCount);
+
+      // Track challenge completion
+      if (newCompletedCount === challenge.checklist.length) {
+        trackEvent(AnalyticsEvents.CHALLENGE_COMPLETED, {
+          analysis_id: analysis.id,
+        });
+      }
+    }
   };
 
   const handleShare = async () => {
@@ -65,6 +101,10 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
         const uri = await viewShotRef.current.capture();
         if (await Sharing.isAvailableAsync()) {
           await Sharing.shareAsync(uri);
+          trackEvent(AnalyticsEvents.REPORT_SHARED, {
+            analysis_id: analysis.id,
+            confidence: rootCause.confidence,
+          });
         } else {
           Alert.alert('Sharing not available', 'Unable to share on this device.');
         }
