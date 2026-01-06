@@ -1,5 +1,5 @@
 /**
- * App Icon Generator for Pocket Caddie AI
+ * App Icon Generator for SliceFix AI
  *
  * This script generates all required iOS app icon sizes from a source SVG.
  * Uses Node.js with sharp for image processing.
@@ -38,7 +38,7 @@ const SOURCE_SVG = path.join(__dirname, '../assets/source/app-icon.svg');
 const OUTPUT_DIR = path.join(__dirname, '../assets/generated/icons');
 
 async function generateIcons() {
-  console.log('🎨 Pocket Caddie AI - Icon Generator\n');
+  console.log('🎨 SliceFix AI - Icon Generator\n');
 
   // Check if sharp is available
   let sharp: any;

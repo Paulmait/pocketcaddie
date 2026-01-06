@@ -1,5 +1,5 @@
 /**
- * App Store Asset Validator for Pocket Caddie AI
+ * App Store Asset Validator for SliceFix AI
  *
  * Validates all generated assets meet App Store requirements:
  * - Correct dimensions
@@ -50,7 +50,7 @@ export async function validateAssets(): Promise<ValidationResult> {
     errors: [],
   };
 
-  console.log('\n📋 Pocket Caddie AI - Asset Validator');
+  console.log('\n📋 SliceFix AI - Asset Validator');
   console.log('======================================\n');
 
   // Check for sharp

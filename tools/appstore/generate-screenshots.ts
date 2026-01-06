@@ -1,5 +1,5 @@
 /**
- * Synthetic Screenshot Generator for Pocket Caddie AI
+ * Synthetic Screenshot Generator for SliceFix AI
  *
  * Generates App Store screenshots programmatically using Sharp.
  * Based on the actual screen layouts and design system.
@@ -818,7 +818,7 @@ async function generateScreenshot(name: string, svgContent: string): Promise<voi
 }
 
 async function main(): Promise<void> {
-  console.log('\n\ud83d\udcf1 Pocket Caddie AI - Screenshot Generator');
+  console.log('\n\ud83d\udcf1 SliceFix AI - Screenshot Generator');
   console.log('=============================================\n');
 
   // Ensure output directory exists

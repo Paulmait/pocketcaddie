@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Pocket Caddie AI",
-    "slug": "pocket-caddie-ai",
+    "name": "SliceFix AI",
+    "slug": "slicefix-ai",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "pocketcaddie",
+    "scheme": "slicefix",
     "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
@@ -18,9 +18,9 @@
       "bundleIdentifier": "com.cienrios.pocketcaddieai",
       "buildNumber": "1",
       "infoPlist": {
-        "NSCameraUsageDescription": "Pocket Caddie AI needs camera access to record your golf swing for analysis.",
-        "NSPhotoLibraryUsageDescription": "Pocket Caddie AI needs photo library access to select swing videos for analysis.",
-        "NSMicrophoneUsageDescription": "Pocket Caddie AI needs microphone access when recording swing videos."
+        "NSCameraUsageDescription": "SliceFix AI needs camera access to record your golf swing for analysis.",
+        "NSPhotoLibraryUsageDescription": "SliceFix AI needs photo library access to select swing videos for analysis.",
+        "NSMicrophoneUsageDescription": "SliceFix AI needs microphone access when recording swing videos."
       },
       "usesAppleSignIn": true,
       "config": {
@@ -40,13 +40,13 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow Pocket Caddie AI to access your camera to record swing videos."
+          "cameraPermission": "Allow SliceFix AI to access your camera to record swing videos."
         }
       ],
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow Pocket Caddie AI to access your photos to select swing videos."
+          "photosPermission": "Allow SliceFix AI to access your photos to select swing videos."
         }
       ]
     ],
@@ -55,7 +55,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "14bd2c65-383f-4be2-9ef2-569ce481b3d4"
       }
     }
   }

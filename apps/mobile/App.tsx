@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, LinkingOptions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Linking from 'expo-linking';
 
 import { useAppStore } from './src/store/useAppStore';
 import { initializePurchases, checkSubscriptionStatus } from './src/services/subscriptions';
@@ -17,20 +18,25 @@ import {
 import { colors } from './src/constants/theme';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { RatingProvider } from './src/hooks/useRatingPrompt';
+import { AuthProvider } from './src/providers/AuthProvider';
 import { initNetworkMonitoring } from './src/services/network';
 import { loadQueueFromStorage } from './src/services/uploadQueue';
 
 // Screens
 import { OnboardingScreen } from './src/screens/OnboardingScreen';
 import { AuthScreen } from './src/screens/AuthScreen';
+import { LoginCallbackScreen } from './src/screens/LoginCallbackScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { UploadScreen } from './src/screens/UploadScreen';
 import { ProcessingScreen } from './src/screens/ProcessingScreen';
 import { ResultsScreen } from './src/screens/ResultsScreen';
 import { PaywallScreen } from './src/screens/PaywallScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
+import { DeleteAccountScreen } from './src/screens/DeleteAccountScreen';
 import { CameraScreen } from './src/screens/CameraScreen';
 import { ProgressScreen } from './src/screens/ProgressScreen';
+import DrillLibraryScreen from './src/screens/DrillLibraryScreen';
+import DrillDetailScreen from './src/screens/DrillDetailScreen';
 
 // Keep splash screen visible while loading
 SplashScreen.preventAutoHideAsync();
@@ -38,6 +44,7 @@ SplashScreen.preventAutoHideAsync();
 export type RootStackParamList = {
   Onboarding: undefined;
   Auth: undefined;
+  LoginCallback: undefined;
   Home: undefined;
   Upload: undefined;
   Camera: undefined;
@@ -46,9 +53,24 @@ export type RootStackParamList = {
   Progress: undefined;
   Paywall: undefined;
   Settings: undefined;
+  DeleteAccount: undefined;
+  DrillLibrary: { filterCause?: string };
+  DrillDetail: { drillId: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
+// Deep linking configuration for magic link auth
+const linking: LinkingOptions<RootStackParamList> = {
+  prefixes: [Linking.createURL('/'), 'slicefix://'],
+  config: {
+    screens: {
+      LoginCallback: 'login',
+      Home: 'home',
+      Settings: 'settings',
+    },
+  },
+};
 
 function AppContent() {
   const [isReady, setIsReady] = useState(false);
@@ -132,7 +154,7 @@ function AppContent() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <StatusBar style="light" />
       <Stack.Navigator
         screenOptions={{
@@ -150,6 +172,7 @@ function AppContent() {
       >
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="Auth" component={AuthScreen} />
+        <Stack.Screen name="LoginCallback" component={LoginCallbackScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Upload" component={UploadScreen} />
         <Stack.Screen
@@ -160,12 +183,19 @@ function AppContent() {
         <Stack.Screen name="Processing" component={ProcessingScreen} />
         <Stack.Screen name="Results" component={ResultsScreen} />
         <Stack.Screen name="Progress" component={ProgressScreen} />
+        <Stack.Screen name="DrillLibrary" component={DrillLibraryScreen} />
+        <Stack.Screen name="DrillDetail" component={DrillDetailScreen} />
         <Stack.Screen
           name="Paywall"
           component={PaywallScreen}
           options={{ presentation: 'modal' }}
         />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen
+          name="DeleteAccount"
+          component={DeleteAccountScreen}
+          options={{ presentation: 'modal' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -175,9 +205,11 @@ export default function App() {
   return (
     <ErrorBoundary>
       <SafeAreaProvider>
-        <RatingProvider>
-          <AppContent />
-        </RatingProvider>
+        <AuthProvider>
+          <RatingProvider>
+            <AppContent />
+          </RatingProvider>
+        </AuthProvider>
       </SafeAreaProvider>
     </ErrorBoundary>
   );

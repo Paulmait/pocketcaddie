@@ -5,10 +5,10 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAppStore, SwingAnalysis } from '../store/useAppStore';
+import { useAppStore } from '../store/useAppStore';
 
-const STREAK_STORAGE_KEY = '@pocket_caddie_streak';
-const PRACTICE_LOG_KEY = '@pocket_caddie_practice_log';
+const STREAK_STORAGE_KEY = '@slicefix_streak';
+const PRACTICE_LOG_KEY = '@slicefix_practice_log';
 
 interface PracticeSession {
   date: string;
@@ -60,18 +60,7 @@ export const useProgressTracking = (): UseProgressTrackingReturn => {
   });
   const [practiceLog, setPracticeLog] = useState<PracticeSession[]>([]);
 
-  // Load streak data on mount
-  useEffect(() => {
-    loadStreakData();
-    loadPracticeLog();
-  }, []);
-
-  // Update streak when analyses change
-  useEffect(() => {
-    updateStreakFromAnalyses();
-  }, [analyses]);
-
-  const loadStreakData = async () => {
+  const loadStreakData = useCallback(async () => {
     try {
       const stored = await AsyncStorage.getItem(STREAK_STORAGE_KEY);
       if (stored) {
@@ -80,9 +69,9 @@ export const useProgressTracking = (): UseProgressTrackingReturn => {
     } catch (error) {
       console.error('Failed to load streak data:', error);
     }
-  };
+  }, []);
 
-  const loadPracticeLog = async () => {
+  const loadPracticeLog = useCallback(async () => {
     try {
       const stored = await AsyncStorage.getItem(PRACTICE_LOG_KEY);
       if (stored) {
@@ -91,7 +80,14 @@ export const useProgressTracking = (): UseProgressTrackingReturn => {
     } catch (error) {
       console.error('Failed to load practice log:', error);
     }
-  };
+  }, []);
+
+  // Load streak data on mount
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadStreakData();
+    loadPracticeLog();
+  }, [loadStreakData, loadPracticeLog]);
 
   const saveStreakData = async (data: StreakData) => {
     try {
@@ -143,6 +139,12 @@ export const useProgressTracking = (): UseProgressTrackingReturn => {
       });
     }
   }, [analyses, streakData]);
+
+  // Update streak when analyses change
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    updateStreakFromAnalyses();
+  }, [updateStreakFromAnalyses]);
 
   const logPracticeSession = useCallback(
     async (duration: number, drillsCompleted: number, challengeItems: number) => {

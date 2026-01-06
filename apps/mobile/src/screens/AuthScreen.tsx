@@ -137,7 +137,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
       >
         <View style={styles.header}>
           <Ionicons name="golf" size={64} color={colors.primary.light} />
-          <Text style={styles.title}>Pocket Caddie AI</Text>
+          <Text style={styles.title}>SliceFix AI</Text>
           <Text style={styles.subtitle}>Sign in to save your progress</Text>
         </View>
 

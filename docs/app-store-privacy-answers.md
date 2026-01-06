@@ -164,7 +164,7 @@ For each collected data type, select the applicable purposes:
 
 ## Privacy Policy URL
 
-`https://pocketcaddieai.com/privacy`
+`https://slicefixai.com/privacy`
 
 (Must be publicly accessible before submission)
 

@@ -1,5 +1,5 @@
 /**
- * Pocket Caddie AI Design System
+ * SliceFix AI Design System
  * Dark Mode First - Premium Sports Tech Look
  */
 

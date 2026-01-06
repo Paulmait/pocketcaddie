@@ -1,5 +1,6 @@
 export { OnboardingScreen } from './OnboardingScreen';
 export { AuthScreen } from './AuthScreen';
+export { LoginCallbackScreen } from './LoginCallbackScreen';
 export { HomeScreen } from './HomeScreen';
 export { UploadScreen } from './UploadScreen';
 export { CameraScreen } from './CameraScreen';
@@ -8,3 +9,4 @@ export { ResultsScreen } from './ResultsScreen';
 export { ProgressScreen } from './ProgressScreen';
 export { PaywallScreen } from './PaywallScreen';
 export { SettingsScreen } from './SettingsScreen';
+export { DeleteAccountScreen } from './DeleteAccountScreen';

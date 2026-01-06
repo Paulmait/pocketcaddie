@@ -1,11 +1,11 @@
 # Privacy Policy
 
-**Pocket Caddie AI – Fix My Slice Fast**
+**SliceFix AI – Fix My Slice Fast**
 
 **Effective Date:** January 5, 2026
-**Last Updated:** January 5, 2026
+**Last Updated:** January 6, 2026
 
-This Privacy Policy describes how Cien Rios LLC ("Company," "we," "our," or "us") collects, uses, stores, and protects information when you use the Pocket Caddie AI – Fix My Slice Fast mobile application ("App").
+This Privacy Policy describes how Cien Rios LLC ("Company," "we," "our," or "us") collects, uses, stores, and protects information when you use the SliceFix AI – Fix My Slice Fast mobile application ("App").
 
 ---
 
@@ -116,7 +116,7 @@ All providers are contractually required to protect your data.
 
 ## 9. Children's Privacy
 
-Pocket Caddie AI is not intended for children under 13. We do not knowingly collect personal data from children.
+SliceFix AI is not intended for children under 13. We do not knowingly collect personal data from children.
 
 ---
 

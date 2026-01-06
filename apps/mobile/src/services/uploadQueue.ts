@@ -6,11 +6,10 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
-import { checkNetworkStatus, waitForConnection } from './network';
+import { checkNetworkStatus } from './network';
 import { analyzeSwing } from './analysis';
-import { SwingAnalysis } from '../store/useAppStore';
 
-const QUEUE_STORAGE_KEY = '@pocket_caddie_upload_queue';
+const QUEUE_STORAGE_KEY = '@slicefix_upload_queue';
 const LOCAL_VIDEOS_DIR = `${FileSystem.documentDirectory}pending_videos/`;
 
 export interface QueuedUpload {
@@ -29,7 +28,7 @@ export interface QueueState {
   isProcessing: boolean;
 }
 
-let queueState: QueueState = {
+const queueState: QueueState = {
   items: [],
   isProcessing: false,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -60,17 +60,21 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   const flatListRef = useRef<FlatList>(null);
   const setOnboardingComplete = useAppStore((s) => s.setOnboardingComplete);
 
-  const onViewableItemsChanged = useRef(
+  const onViewableItemsChanged = useCallback(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
       if (viewableItems.length > 0 && viewableItems[0].index !== null) {
         setCurrentIndex(viewableItems[0].index);
       }
-    }
-  ).current;
+    },
+    []
+  );
 
-  const viewabilityConfig = useRef({
-    itemVisiblePercentThreshold: 50,
-  }).current;
+  const viewabilityConfig = useMemo(
+    () => ({
+      itemVisiblePercentThreshold: 50,
+    }),
+    []
+  );
 
   const handleNext = () => {
     if (currentIndex < slides.length - 1) {

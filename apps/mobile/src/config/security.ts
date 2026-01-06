@@ -1,6 +1,6 @@
 /**
  * Security Configuration
- * Centralized security settings for the Pocket Caddie app
+ * Centralized security settings for the SliceFix app
  */
 
 // Rate limiting configuration

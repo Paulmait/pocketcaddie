@@ -1,5 +1,5 @@
 /**
- * Analytics Service for Pocket Caddie AI
+ * Analytics Service for SliceFix AI
  *
  * Supports multiple analytics backends:
  * - Mixpanel (primary)
@@ -119,11 +119,12 @@ class Analytics {
 
     if (mixpanelToken) {
       try {
-        // Dynamic import to avoid errors if not installed
-        const { Mixpanel } = await import('mixpanel-react-native');
-        this.mixpanel = new Mixpanel(mixpanelToken, true);
-        await this.mixpanel.init();
-        console.log('Analytics: Mixpanel initialized');
+        // Mixpanel is optional - skip if not installed
+        // To enable: npm install mixpanel-react-native
+        // const Mixpanel = require('mixpanel-react-native').default;
+        // this.mixpanel = new Mixpanel(mixpanelToken, true);
+        // await this.mixpanel.init();
+        console.log('Analytics: Mixpanel token provided but SDK not installed, using Supabase fallback');
       } catch (error) {
         console.log('Analytics: Mixpanel not available, using Supabase fallback');
       }

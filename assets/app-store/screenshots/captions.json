@@ -2,7 +2,7 @@
   "$schema": "./captions.schema.json",
   "version": "1.0.0",
   "app": {
-    "name": "Pocket Caddie AI",
+    "name": "SliceFix AI",
     "tagline": "Fix Your Slice Fast"
   },
   "locale": "en-US",

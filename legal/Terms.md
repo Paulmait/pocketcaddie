@@ -1,11 +1,11 @@
 # Terms of Service
 
-**Pocket Caddie AI – Fix My Slice Fast**
+**SliceFix AI – Fix My Slice Fast**
 
 **Effective Date:** January 5, 2026
-**Last Updated:** January 5, 2026
+**Last Updated:** January 6, 2026
 
-These Terms of Service ("Terms") govern your use of the Pocket Caddie AI – Fix My Slice Fast mobile application ("App"), provided by Cien Rios LLC.
+These Terms of Service ("Terms") govern your use of the SliceFix AI – Fix My Slice Fast mobile application ("App"), provided by Cien Rios LLC.
 
 **By downloading or using the App, you agree to these Terms.**
 
@@ -19,7 +19,7 @@ You must be at least 13 years old to use the App.
 
 ## 2. App Purpose & Disclaimer
 
-- Pocket Caddie AI provides educational golf coaching guidance only
+- SliceFix AI provides educational golf coaching guidance only
 - The App does not provide professional, medical, or physical therapy advice
 - Results are not guaranteed
 - You are responsible for your own training decisions and physical activity

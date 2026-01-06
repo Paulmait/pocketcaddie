@@ -117,19 +117,85 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 // Screen-level error boundary with navigation reset option
-interface ScreenErrorBoundaryProps extends Props {
+interface ScreenErrorBoundaryProps {
+  children: ReactNode;
   screenName: string;
+  fallback?: ReactNode;
+  onError?: (error: Error, errorInfo: ErrorInfo) => void;
 }
 
-export class ScreenErrorBoundary extends ErrorBoundary {
-  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    super.componentDidCatch(error, errorInfo);
+export class ScreenErrorBoundary extends Component<ScreenErrorBoundaryProps, State> {
+  constructor(props: ScreenErrorBoundaryProps) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+    };
+  }
 
-    const { screenName } = this.props as ScreenErrorBoundaryProps;
+  static getDerivedStateFromError(error: Error): Partial<State> {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    this.setState({ errorInfo });
+
+    const { screenName } = this.props;
     analytics.track('screen_error' as any, {
       screen: screenName,
       error_message: error.message,
     });
+
+    // Call custom error handler if provided
+    this.props.onError?.(error, errorInfo);
+
+    console.error(`ScreenErrorBoundary [${screenName}] caught an error:`, error, errorInfo);
+  }
+
+  handleRetry = () => {
+    this.setState({
+      hasError: false,
+      error: null,
+      errorInfo: null,
+    });
+  };
+
+  render() {
+    if (this.state.hasError) {
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      return (
+        <SafeAreaView style={styles.container}>
+          <View style={styles.content}>
+            <View style={styles.iconContainer}>
+              <Ionicons
+                name="warning-outline"
+                size={64}
+                color={colors.status.warning}
+              />
+            </View>
+
+            <Text style={styles.title}>Something went wrong</Text>
+            <Text style={styles.message}>
+              We encountered an error on this screen. Please try again.
+            </Text>
+
+            <TouchableOpacity
+              style={styles.retryButton}
+              onPress={this.handleRetry}
+            >
+              <Ionicons name="refresh" size={20} color={colors.text.primary} />
+              <Text style={styles.retryButtonText}>Try Again</Text>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      );
+    }
+
+    return this.props.children;
   }
 }
 

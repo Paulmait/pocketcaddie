@@ -1,6 +1,6 @@
 # Privacy Data Map
 
-This document maps all data collected, stored, and processed by Pocket Caddie AI for privacy compliance and App Store Privacy Nutrition Label requirements.
+This document maps all data collected, stored, and processed by SliceFix AI for privacy compliance and App Store Privacy Nutrition Label requirements.
 
 ---
 

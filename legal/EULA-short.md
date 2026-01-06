@@ -1,11 +1,11 @@
 # End User License Agreement (EULA)
 
-**Pocket Caddie AI – Fix My Slice Fast**
+**SliceFix AI – Fix My Slice Fast**
 
 **Effective Date:** January 5, 2026
-**Last Updated:** January 5, 2026
+**Last Updated:** January 6, 2026
 
-This End User License Agreement ("EULA") governs your use of Pocket Caddie AI ("App"), provided by Cien Rios LLC.
+This End User License Agreement ("EULA") governs your use of SliceFix AI ("App"), provided by Cien Rios LLC.
 
 ---
 
@@ -102,4 +102,4 @@ United States
 
 ---
 
-By installing or using Pocket Caddie AI, you agree to this EULA.
+By installing or using SliceFix AI, you agree to this EULA.

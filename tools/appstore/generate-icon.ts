@@ -1,5 +1,5 @@
 /**
- * App Store Icon Generator for Pocket Caddie AI
+ * App Store Icon Generator for SliceFix AI
  *
  * Generates all required iOS app icon sizes from source SVG.
  * Compliant with Apple App Store requirements:
@@ -43,7 +43,7 @@ async function generateIcons(): Promise<GenerationResult> {
     errors: [],
   };
 
-  console.log('\n🎨 Pocket Caddie AI - Icon Generator');
+  console.log('\n🎨 SliceFix AI - Icon Generator');
   console.log('=====================================\n');
 
   // Check for sharp

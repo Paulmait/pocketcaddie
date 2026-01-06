@@ -1,4 +1,4 @@
-# Pocket Caddie AI - App Store Asset Pipeline
+# SliceFix AI - App Store Asset Pipeline
 
 Complete guide for generating App Store assets (icons and screenshots) for iOS submission.
 

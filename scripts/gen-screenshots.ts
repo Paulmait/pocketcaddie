@@ -1,5 +1,5 @@
 /**
- * App Store Screenshot Generator for Pocket Caddie AI
+ * App Store Screenshot Generator for SliceFix AI
  *
  * This script generates App Store screenshots with device frames and captions.
  * Uses a JSON config file for customization.
@@ -85,7 +85,7 @@ const DESIGN = {
 };
 
 async function generateScreenshots() {
-  console.log('📸 Pocket Caddie AI - Screenshot Generator\n');
+  console.log('📸 SliceFix AI - Screenshot Generator\n');
 
   // Check if sharp is available
   let sharp: any;

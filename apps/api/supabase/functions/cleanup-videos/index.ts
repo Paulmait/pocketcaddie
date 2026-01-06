@@ -56,7 +56,7 @@ serve(async (req) => {
       try {
         // Delete from storage
         const { error: storageError } = await supabase.storage
-          .from('swing-videos')
+          .from('videos')
           .remove([video.video_path]);
 
         if (storageError) {
@@ -92,7 +92,7 @@ serve(async (req) => {
     const orphanCutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString();
 
     const { data: storageFiles } = await supabase.storage
-      .from('swing-videos')
+      .from('videos')
       .list('', { limit: 100 });
 
     if (storageFiles) {
@@ -102,7 +102,7 @@ serve(async (req) => {
 
         // List files in user folder
         const { data: userFiles } = await supabase.storage
-          .from('swing-videos')
+          .from('videos')
           .list(file.name, { limit: 100 });
 
         if (userFiles) {
@@ -120,7 +120,7 @@ serve(async (req) => {
               if (!queueEntry) {
                 console.log(`Deleting orphaned video: ${filePath}`);
                 await supabase.storage
-                  .from('swing-videos')
+                  .from('videos')
                   .remove([filePath]);
                 deletedCount++;
               }

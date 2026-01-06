@@ -1,5 +1,5 @@
 /**
- * Screenshot Mode Utility for Pocket Caddie AI
+ * Screenshot Mode Utility for SliceFix AI
  *
  * Provides deterministic data and UI state for consistent App Store screenshots.
  * This should be used during development/marketing asset creation only.

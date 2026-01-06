@@ -1,7 +1,7 @@
 export * from './theme';
 
 // App constants
-export const APP_NAME = 'Pocket Caddie AI';
+export const APP_NAME = 'SliceFix AI';
 export const APP_TAGLINE = 'Fix Your Slice Fast';
 
 // Subscription SKUs

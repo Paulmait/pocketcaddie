@@ -56,13 +56,13 @@ serve(async (req) => {
     // 1. Delete all user's videos from storage
     try {
       const { data: userVideos } = await supabaseAdmin.storage
-        .from('swing-videos')
+        .from('videos')
         .list(userId);
 
       if (userVideos && userVideos.length > 0) {
         const filePaths = userVideos.map(f => `${userId}/${f.name}`);
         await supabaseAdmin.storage
-          .from('swing-videos')
+          .from('videos')
           .remove(filePaths);
         deletionLog.push(`Deleted ${filePaths.length} videos from storage`);
       }

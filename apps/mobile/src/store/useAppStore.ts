@@ -2,6 +2,13 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export interface DrillPracticeRecord {
+  drillId: string;
+  practiceDate: string;
+  durationMinutes: number;
+  notes?: string;
+}
+
 export interface SwingAnalysis {
   id: string;
   createdAt: string;
@@ -50,6 +57,9 @@ interface AppState {
   currentAnalysis: SwingAnalysis | null;
   isAnalyzing: boolean;
 
+  // Drill Practice
+  drillPracticeLog: DrillPracticeRecord[];
+
   // Actions
   setUser: (user: User | null) => void;
   setOnboardingComplete: () => void;
@@ -59,6 +69,7 @@ interface AppState {
   updateChallengeProgress: (analysisId: string, itemIndex: number, completed: boolean) => void;
   deleteAnalysis: (id: string) => void;
   setIsAnalyzing: (analyzing: boolean) => void;
+  logDrillPractice: (drillId: string, durationMinutes: number, notes?: string) => void;
   clearAllData: () => void;
 }
 
@@ -73,6 +84,7 @@ const initialState = {
   analyses: [],
   currentAnalysis: null,
   isAnalyzing: false,
+  drillPracticeLog: [],
 };
 
 export const useAppStore = create<AppState>()(
@@ -89,12 +101,12 @@ export const useAppStore = create<AppState>()(
       setOnboardingComplete: () =>
         set({ hasCompletedOnboarding: true }),
 
-      setSubscription: (type, trial = false, trialEnd = null) =>
+      setSubscription: (type, trial = false, trialEnd) =>
         set({
           isSubscribed: !!type,
           subscriptionType: type,
           trialActive: trial,
-          trialEndDate: trialEnd,
+          trialEndDate: trialEnd ?? null,
         }),
 
       addAnalysis: (analysis) =>
@@ -145,10 +157,23 @@ export const useAppStore = create<AppState>()(
       setIsAnalyzing: (analyzing) =>
         set({ isAnalyzing: analyzing }),
 
+      logDrillPractice: (drillId, durationMinutes, notes) =>
+        set((state) => ({
+          drillPracticeLog: [
+            {
+              drillId,
+              practiceDate: new Date().toISOString(),
+              durationMinutes,
+              notes,
+            },
+            ...state.drillPracticeLog,
+          ],
+        })),
+
       clearAllData: () => set(initialState),
     }),
     {
-      name: 'pocket-caddie-storage',
+      name: 'slicefix-storage',
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({
         user: state.user,
@@ -159,6 +184,7 @@ export const useAppStore = create<AppState>()(
         trialActive: state.trialActive,
         trialEndDate: state.trialEndDate,
         analyses: state.analyses,
+        drillPracticeLog: state.drillPracticeLog,
       }),
     }
   )

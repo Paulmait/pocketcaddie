@@ -1,10 +1,10 @@
-# Pocket Caddie AI — Fix My Slice Fast
+# SliceFix AI — Fix My Slice Fast
 
 > "Identify the most common cause of your slice and get **one drill** you can try immediately."
 
 ## Overview
 
-Pocket Caddie AI is an iOS-first app that helps golfers fix their slice using short swing videos, AI-assisted analysis, and a tight feedback loop.
+SliceFix AI is an iOS-first app that helps golfers fix their slice using short swing videos, AI-assisted analysis, and a tight feedback loop.
 
 ### How It Works
 
@@ -23,7 +23,7 @@ Pocket Caddie AI is an iOS-first app that helps golfers fix their slice using sh
 ## Project Structure
 
 ```
-pocket-caddie-ai/
+slicefix-ai/
 ├─ apps/
 │  ├─ mobile/              # Expo RN app
 │  └─ api/                 # Edge functions

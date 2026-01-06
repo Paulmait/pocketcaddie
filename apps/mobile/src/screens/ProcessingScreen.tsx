@@ -81,7 +81,15 @@ export const ProcessingScreen: React.FC<ProcessingScreenProps> = ({
             error.message || 'Something went wrong. Please try again.',
             [
               {
-                text: 'OK',
+                text: 'Try Again',
+                onPress: () => {
+                  setCurrentStep(0);
+                  processVideo();
+                },
+              },
+              {
+                text: 'Cancel',
+                style: 'cancel',
                 onPress: () => navigation.goBack(),
               },
             ]

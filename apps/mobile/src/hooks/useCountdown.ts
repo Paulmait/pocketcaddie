@@ -36,12 +36,14 @@ export const useCountdown = (options: UseCountdownOptions = {}): UseCountdownRet
 
   // Clean up sound on unmount
   useEffect(() => {
+    const sound = soundRef.current;
+    const timer = timerRef.current;
     return () => {
-      if (soundRef.current) {
-        soundRef.current.unloadAsync();
+      if (sound) {
+        sound.unloadAsync();
       }
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
+      if (timer) {
+        clearInterval(timer);
       }
     };
   }, []);

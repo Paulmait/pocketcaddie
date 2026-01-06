@@ -38,7 +38,7 @@ export const useShakeDetector = (
   const [shakeCount, setShakeCount] = useState(0);
 
   const lastShakeTime = useRef<number>(0);
-  const lastAcceleration = useRef<AccelerometerMeasurement>({ x: 0, y: 0, z: 0 });
+  const lastAcceleration = useRef<AccelerometerMeasurement>({ x: 0, y: 0, z: 0, timestamp: 0 });
 
   const resetShakeCount = useCallback(() => {
     setShakeCount(0);
@@ -77,7 +77,7 @@ export const useShakeDetector = (
           const acceleration = Math.sqrt(deltaX ** 2 + deltaY ** 2 + deltaZ ** 2);
 
           // Update last acceleration
-          lastAcceleration.current = { x, y, z };
+          lastAcceleration.current = data;
 
           // Check for shake
           const now = Date.now();

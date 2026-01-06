@@ -1,5 +1,5 @@
 /**
- * App Store Screenshot Postprocessor for Pocket Caddie AI
+ * App Store Screenshot Postprocessor for SliceFix AI
  *
  * Takes raw screenshot captures and processes them into App Store ready assets:
  * - Resizes to required dimensions
@@ -74,7 +74,7 @@ async function processScreenshots(): Promise<ProcessResult> {
     errors: [],
   };
 
-  console.log('\n📸 Pocket Caddie AI - Screenshot Postprocessor');
+  console.log('\n📸 SliceFix AI - Screenshot Postprocessor');
   console.log('==============================================\n');
 
   // Check for sharp

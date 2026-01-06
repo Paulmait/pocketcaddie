@@ -2,16 +2,19 @@ export { supabase, uploadVideo, deleteVideo } from './supabase';
 export { analyzeSwing, getMockAnalysis } from './analysis';
 export {
   initializePurchases,
-  purchaseMonthly,
-  purchaseAnnual,
+  purchasePackage,
   restorePurchases,
   checkSubscriptionStatus,
+  getOfferings,
+  formatPrice,
+  getTrialInfo,
 } from './subscriptions';
 export {
   initializeAnalytics,
   setAnalyticsUserId,
-  setAnalyticsUserProperty,
   trackEvent,
+  trackScreen,
+  analytics,
   AnalyticsEvents,
 } from './analytics';
 export {
@@ -31,3 +34,18 @@ export {
   getQueueStatus,
   clearCompletedItems,
 } from './uploadQueue';
+export { logger, log } from './logger';
+export {
+  getSession,
+  getUser,
+  onAuthStateChange,
+  signInWithEmailOtp,
+  verifyEmailOtp,
+  signInWithApple,
+  signOut,
+  requestAccountDeletion,
+  refreshSession,
+  type AuthUser,
+  type AuthSession,
+  type AuthResult,
+} from './auth';

@@ -16,7 +16,7 @@ import { RootStackParamList } from '../../App';
 import { GlassCard } from '../components/GlassCard';
 import { Button } from '../components/Button';
 import { useAppStore } from '../store/useAppStore';
-import { signOut, deleteAccount } from '../services/supabase';
+import { signOut } from '../services/supabase';
 import { restorePurchases } from '../services/subscriptions';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 
@@ -101,50 +101,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
   };
 
   const handleDeleteAccount = () => {
-    Alert.alert(
-      'Delete Account',
-      'This will permanently delete your account and all associated data, including:\n\n• Your profile information\n• All swing analyses\n• All progress data\n\nThis action cannot be undone.\n\nNote: Active subscriptions must be cancelled separately in Apple ID Settings.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete Account',
-          style: 'destructive',
-          onPress: () => confirmDeleteAccount(),
-        },
-      ]
-    );
-  };
-
-  const confirmDeleteAccount = () => {
-    Alert.alert(
-      'Confirm Deletion',
-      'Are you absolutely sure? Type DELETE to confirm.',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Yes, Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await deleteAccount();
-              clearAllData();
-              Alert.alert(
-                'Account Deleted',
-                'Your account and all data have been deleted.',
-                [
-                  {
-                    text: 'OK',
-                    onPress: () => navigation.replace('Onboarding'),
-                  },
-                ]
-              );
-            } catch (error) {
-              Alert.alert('Error', 'Failed to delete account. Please contact support.');
-            }
-          },
-        },
-      ]
-    );
+    // Navigate to dedicated Delete Account screen
+    navigation.navigate('DeleteAccount');
   };
 
   const handleRestorePurchases = async () => {
@@ -173,11 +131,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
   };
 
   const handleOpenPrivacy = () => {
-    Linking.openURL('https://pocketcaddieai.com/privacy');
+    Linking.openURL('https://slicefixai.com/privacy');
   };
 
   const handleOpenTerms = () => {
-    Linking.openURL('https://pocketcaddieai.com/terms');
+    Linking.openURL('https://slicefixai.com/terms');
   };
 
   const handleContact = () => {
@@ -319,7 +277,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
         {/* App Version */}
         <Text style={styles.version}>
-          Pocket Caddie AI v1.0.0{'\n'}
+          SliceFix AI v1.0.0{'\n'}
           Cien Rios LLC
         </Text>
       </ScrollView>

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Pocket Caddie AI - App Store Asset Pipeline
+ * SliceFix AI - App Store Asset Pipeline
  *
  * Main CLI entry point for generating all App Store assets.
  *
@@ -28,7 +28,7 @@ async function main() {
   const args = process.argv.slice(2);
   const command = args[0]?.toLowerCase() || 'help';
 
-  console.log('\n🏌️ Pocket Caddie AI - App Store Asset Pipeline');
+  console.log('\n🏌️ SliceFix AI - App Store Asset Pipeline');
   console.log('================================================\n');
 
   if (!COMMANDS.includes(command)) {

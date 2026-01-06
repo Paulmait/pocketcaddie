@@ -8,7 +8,7 @@
  * - Not if user has already rated
  */
 
-import { useCallback, useEffect } from 'react';
+import React, { createContext, useContext, ReactNode, useCallback, useEffect } from 'react';
 import * as StoreReview from 'expo-store-review';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
@@ -184,8 +184,6 @@ async function getRatingState(): Promise<RatingState> {
 }
 
 // Context provider for app-wide rating prompt access
-import React, { createContext, useContext, ReactNode } from 'react';
-
 interface RatingContextValue {
   trackAnalysisComplete: (confidence: 'low' | 'medium' | 'high') => Promise<void>;
   trackChallengeItemComplete: (totalCompleted: number) => Promise<void>;

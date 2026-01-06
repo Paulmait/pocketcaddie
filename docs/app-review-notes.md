@@ -1,6 +1,6 @@
 # App Store Review Notes
 
-**App Name**: Pocket Caddie AI
+**App Name**: SliceFix AI
 **Version**: 1.0.0
 **Category**: Sports / Health & Fitness
 
@@ -8,7 +8,7 @@
 
 ## App Purpose
 
-Pocket Caddie AI helps golfers identify and fix their slice through AI-powered swing video analysis. Users upload a short swing video, receive analysis identifying the primary cause of their slice, and get a focused practice drill.
+SliceFix AI helps golfers identify and fix their slice through AI-powered swing video analysis. Users upload a short swing video, receive analysis identifying the primary cause of their slice, and get a focused practice drill.
 
 ### Core Features
 1. Upload 5-8 second swing videos
@@ -189,9 +189,9 @@ See `privacy-data-map.md` for complete data handling details.
 
 ## Contact for Review Questions
 
-**Email**: review@pocketcaddieai.com
+**Email**: review@slicefixai.com
 **Response Time**: Within 24 hours
 
 ---
 
-*Thank you for reviewing Pocket Caddie AI. We're committed to providing a compliant, user-friendly experience.*
+*Thank you for reviewing SliceFix AI. We're committed to providing a compliant, user-friendly experience.*

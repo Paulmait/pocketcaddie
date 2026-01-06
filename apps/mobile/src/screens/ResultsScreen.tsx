@@ -192,6 +192,33 @@ export const ResultsScreen: React.FC<ResultsScreenProps> = ({
               </View>
             ))}
           </View>
+
+          {/* Explore More Drills Button */}
+          <TouchableOpacity
+            style={styles.exploreDrillsButton}
+            onPress={() =>
+              navigation.navigate('DrillLibrary', {
+                filterCause: rootCause.title,
+              })
+            }
+          >
+            <View style={styles.exploreDrillsContent}>
+              <View style={styles.exploreDrillsIcon}>
+                <Ionicons name="golf" size={20} color={colors.primary.light} />
+              </View>
+              <View style={styles.exploreDrillsText}>
+                <Text style={styles.exploreDrillsTitle}>Explore More Drills</Text>
+                <Text style={styles.exploreDrillsSubtitle}>
+                  Find more exercises for {rootCause.title.toLowerCase()}
+                </Text>
+              </View>
+            </View>
+            <Ionicons
+              name="chevron-forward"
+              size={20}
+              color={colors.text.tertiary}
+            />
+          </TouchableOpacity>
         </GlassCard>
 
         {/* Challenge Section */}
@@ -456,5 +483,41 @@ const styles = StyleSheet.create({
   },
   homeButton: {
     marginTop: spacing.sm,
+  },
+  exploreDrillsButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: spacing.lg,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.surface.glassBorder,
+  },
+  exploreDrillsContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  exploreDrillsIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.primary.main + '20',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.md,
+  },
+  exploreDrillsText: {
+    flex: 1,
+  },
+  exploreDrillsTitle: {
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.semibold,
+    color: colors.text.primary,
+  },
+  exploreDrillsSubtitle: {
+    fontSize: typography.fontSize.xs,
+    color: colors.text.tertiary,
+    marginTop: 2,
   },
 });

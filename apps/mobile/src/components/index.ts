@@ -7,3 +7,8 @@ export { ErrorBoundary, ScreenErrorBoundary, withErrorBoundary } from './ErrorBo
 export { NetworkStatus, OfflineBanner, ProcessingModeIndicator } from './NetworkStatus';
 export { AngleGuide } from './AngleGuide';
 export { SliceSeverityMeter, SeverityBadge } from './SliceSeverityMeter';
+export { DifficultyBadge } from './DifficultyBadge';
+export { DrillCard } from './DrillCard';
+export { ProgressChart } from './ProgressChart';
+export { RootCauseTrend } from './RootCauseTrend';
+export { MotivationalCard } from './MotivationalCard';

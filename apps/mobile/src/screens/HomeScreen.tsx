@@ -103,7 +103,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </Text>
           <View style={styles.titleRow}>
             <Text style={styles.title}>Fix Your Slice</Text>
-            <Text style={styles.tagline}>America's #1 Slice Fixer</Text>
+            <Text style={styles.tagline}>America&apos;s #1 Slice Fixer</Text>
           </View>
         </View>
         <View style={styles.headerRight}>
@@ -136,7 +136,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           <Ionicons name="videocam" size={48} color={colors.primary.light} />
           <Text style={styles.uploadTitle}>Analyze Your Swing</Text>
           <Text style={styles.uploadDescription}>
-            Upload a 5-8 second swing video and get instant feedback on what's
+            Upload a 5-8 second swing video and get instant feedback on what&apos;s
             causing your slice.
           </Text>
           <Button

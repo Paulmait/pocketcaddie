@@ -1,17 +1,22 @@
 # Changelog
 
-All notable changes to Pocket Caddie AI will be documented in this file.
+All notable changes to SliceFix AI will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed app from "Pocket Caddie AI" to "SliceFix AI"
+- Updated all branding, deep link scheme, and documentation
+
 ## [1.0.0] - 2026-01-05
 
 ### Added
 
-- Initial release of Pocket Caddie AI
+- Initial release of SliceFix AI (formerly Pocket Caddie AI)
 - AI-powered golf swing analysis for slice correction
 - Four slice cause detection:
   - Open clubface at impact

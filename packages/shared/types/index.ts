@@ -1,5 +1,5 @@
 /**
- * Shared Types for Pocket Caddie AI
+ * Shared Types for SliceFix AI
  */
 
 // User types
