@@ -1,8 +1,8 @@
 -- Pocket Caddie AI Database Schema
 -- Initial migration
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+-- Enable pgcrypto extension for gen_random_uuid()
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Profiles table (optional, for additional user data)
 CREATE TABLE IF NOT EXISTS profiles (
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS profiles (
 
 -- Analyses table - stores swing analysis results
 CREATE TABLE IF NOT EXISTS analyses (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   video_path TEXT,
   video_deleted_at TIMESTAMPTZ,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS analyses (
 
 -- Video cleanup queue - tracks videos scheduled for deletion
 CREATE TABLE IF NOT EXISTS video_cleanup_queue (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   video_path TEXT NOT NULL,
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   delete_after TIMESTAMPTZ NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS video_cleanup_queue (
 
 -- Account deletions audit log
 CREATE TABLE IF NOT EXISTS account_deletions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id_hash TEXT NOT NULL, -- Hashed user ID for audit without PII
   deleted_at TIMESTAMPTZ NOT NULL,
   deletion_log JSONB,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS account_deletions (
 
 -- Analytics events (for internal analytics)
 CREATE TABLE IF NOT EXISTS analytics_events (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
   event_name TEXT NOT NULL,
   event_properties JSONB,

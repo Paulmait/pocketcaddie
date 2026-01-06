@@ -101,7 +101,7 @@ export const uploadVideo = async (uri: string, userId: string) => {
   const blob = await response.blob();
 
   const { data, error } = await supabase.storage
-    .from('swing-videos')
+    .from('videos')
     .upload(fileName, blob, {
       contentType: 'video/mp4',
     });
@@ -112,7 +112,7 @@ export const uploadVideo = async (uri: string, userId: string) => {
 
 export const deleteVideo = async (path: string) => {
   const { error } = await supabase.storage
-    .from('swing-videos')
+    .from('videos')
     .remove([path]);
 
   if (error) throw error;
@@ -120,7 +120,7 @@ export const deleteVideo = async (path: string) => {
 
 export const getVideoUrl = async (path: string) => {
   const { data } = supabase.storage
-    .from('swing-videos')
+    .from('videos')
     .getPublicUrl(path);
 
   return data.publicUrl;
