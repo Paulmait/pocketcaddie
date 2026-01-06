@@ -16,6 +16,7 @@
     "gen:screenshots": "npx ts-node scripts/gen-screenshots.ts",
     "gen:all": "npm run gen:icons && npm run gen:illustrations && npm run gen:screenshots",
     "appstore:icons": "npx ts-node --transpile-only tools/appstore/generate-icon.ts",
+    "appstore:generate-screenshots": "npx ts-node --transpile-only tools/appstore/generate-screenshots.ts",
     "appstore:screenshots": "npx ts-node --transpile-only tools/appstore/postprocess-screenshots.ts",
     "appstore:validate": "npx ts-node --transpile-only tools/appstore/validate-assets.ts",
     "appstore:assets": "npx ts-node --transpile-only tools/appstore/index.ts all",
