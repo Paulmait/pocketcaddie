@@ -58,7 +58,13 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({ navigation }) => {
     }
   };
 
-  const recordVideo = async () => {
+  const recordVideo = () => {
+    // Navigate to enhanced camera with guides and countdown
+    navigation.navigate('Camera');
+  };
+
+  const recordVideoQuick = async () => {
+    // Quick record using system camera
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
 
     if (!permissionResult.granted) {
@@ -153,11 +159,24 @@ export const UploadScreen: React.FC<UploadScreenProps> = ({ navigation }) => {
               </TouchableOpacity>
 
               <TouchableOpacity onPress={recordVideo} style={styles.uploadOption}>
-                <GlassCard style={styles.optionCard}>
-                  <Ionicons name="videocam-outline" size={48} color={colors.primary.light} />
-                  <Text style={styles.optionTitle}>Record New</Text>
+                <GlassCard style={[styles.optionCard, styles.recommendedCard]}>
+                  <View style={styles.recommendedBadge}>
+                    <Text style={styles.recommendedText}>RECOMMENDED</Text>
+                  </View>
+                  <Ionicons name="videocam" size={48} color={colors.primary.light} />
+                  <Text style={styles.optionTitle}>Record with Guide</Text>
                   <Text style={styles.optionDescription}>
-                    Use your camera to record
+                    Countdown + position guide for best results
+                  </Text>
+                </GlassCard>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={recordVideoQuick} style={styles.uploadOption}>
+                <GlassCard style={styles.optionCard}>
+                  <Ionicons name="flash-outline" size={48} color={colors.text.secondary} />
+                  <Text style={styles.optionTitle}>Quick Record</Text>
+                  <Text style={styles.optionDescription}>
+                    Use system camera
                   </Text>
                 </GlassCard>
               </TouchableOpacity>
@@ -270,6 +289,24 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.sm,
     color: colors.primary.light,
     marginTop: spacing.sm,
+  },
+  recommendedCard: {
+    borderWidth: 1,
+    borderColor: colors.primary.main,
+  },
+  recommendedBadge: {
+    position: 'absolute',
+    top: -10,
+    backgroundColor: colors.primary.main,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.sm,
+  },
+  recommendedText: {
+    fontSize: typography.fontSize.xs,
+    fontWeight: '700',
+    color: colors.text.primary,
+    letterSpacing: 0.5,
   },
   actions: {
     paddingBottom: spacing.lg,

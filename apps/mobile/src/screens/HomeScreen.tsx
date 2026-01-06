@@ -10,13 +10,25 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { RootStackParamList } from '../../App';
 import { Button } from '../components/Button';
 import { GlassCard } from '../components/GlassCard';
 import { ProgressRing } from '../components/ProgressRing';
+import { NetworkStatus } from '../components/NetworkStatus';
+import { SeverityBadge } from '../components/SliceSeverityMeter';
 import { useAppStore, SwingAnalysis } from '../store/useAppStore';
+import { useProgressTracking } from '../hooks/useProgressTracking';
+import { useNetworkStore } from '../services/network';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
+
+// Success stories for social proof
+const SUCCESS_STORIES = [
+  { name: 'Mike T.', sessions: 3, improvement: 'Fixed grip issue' },
+  { name: 'Sarah K.', sessions: 5, improvement: 'Eliminated over-the-top swing' },
+  { name: 'James R.', sessions: 2, improvement: 'Corrected open clubface' },
+];
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
@@ -24,6 +36,8 @@ type HomeScreenProps = {
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { user, isSubscribed, analyses, setCurrentAnalysis } = useAppStore();
+  const { streakData, progressStats, getSliceSeverity } = useProgressTracking();
+  const { isConnected } = useNetworkStore();
 
   const handleUpload = () => {
     if (!isSubscribed && analyses.length >= 1) {
@@ -72,19 +86,44 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Network Status Banner */}
+      {!isConnected && (
+        <View style={styles.offlineBanner}>
+          <Ionicons name="cloud-offline" size={16} color={colors.text.primary} />
+          <Text style={styles.offlineBannerText}>
+            Offline - Videos will sync when connected
+          </Text>
+        </View>
+      )}
+
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>
             {user?.email ? `Welcome back` : 'Welcome'}
           </Text>
-          <Text style={styles.title}>Fix Your Slice</Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.title}>Fix Your Slice</Text>
+            <Text style={styles.tagline}>America's #1 Slice Fixer</Text>
+          </View>
         </View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Settings')}
-          style={styles.settingsButton}
-        >
-          <Ionicons name="settings-outline" size={24} color={colors.text.primary} />
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          {/* Streak indicator */}
+          {streakData.currentStreak > 0 && (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Progress')}
+              style={styles.streakBadge}
+            >
+              <Ionicons name="flame" size={18} color={colors.secondary.main} />
+              <Text style={styles.streakText}>{streakData.currentStreak}</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Settings')}
+            style={styles.settingsButton}
+          >
+            <Ionicons name="settings-outline" size={24} color={colors.text.primary} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <ScrollView
@@ -160,6 +199,65 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             </Text>
           </View>
         )}
+
+        {/* Success Stories - Social Proof */}
+        <View style={styles.successSection}>
+          <Text style={styles.sectionTitle}>Success Stories</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.successScroll}
+          >
+            {SUCCESS_STORIES.map((story, index) => (
+              <GlassCard key={index} style={styles.successCard}>
+                <View style={styles.successHeader}>
+                  <View style={styles.successAvatar}>
+                    <Text style={styles.successInitial}>{story.name.charAt(0)}</Text>
+                  </View>
+                  <Text style={styles.successName}>{story.name}</Text>
+                </View>
+                <Text style={styles.successImprovement}>{story.improvement}</Text>
+                <View style={styles.successMeta}>
+                  <Ionicons name="checkmark-circle" size={14} color={colors.status.success} />
+                  <Text style={styles.successSessions}>
+                    Fixed in {story.sessions} sessions
+                  </Text>
+                </View>
+              </GlassCard>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Progress Link */}
+        {analyses.length > 0 && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Progress')}
+            activeOpacity={0.8}
+          >
+            <GlassCard style={styles.progressCard}>
+              <View style={styles.progressContent}>
+                <View style={styles.progressLeft}>
+                  <Ionicons name="trending-up" size={24} color={colors.primary.light} />
+                  <View style={styles.progressText}>
+                    <Text style={styles.progressTitle}>View Your Progress</Text>
+                    <Text style={styles.progressDescription}>
+                      {progressStats.improvementPercentage >= 0 ? '+' : ''}
+                      {progressStats.improvementPercentage}% improvement • {progressStats.totalAnalyses} analyses
+                    </Text>
+                  </View>
+                </View>
+                <Ionicons name="chevron-forward" size={20} color={colors.text.tertiary} />
+              </View>
+            </GlassCard>
+          </TouchableOpacity>
+        )}
+
+        {/* Community Stats */}
+        <View style={styles.communityStats}>
+          <Text style={styles.communityText}>
+            Join 10,000+ golfers who have improved their slice
+          </Text>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -186,8 +284,50 @@ const styles = StyleSheet.create({
     fontWeight: typography.fontWeight.bold,
     color: colors.text.primary,
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  streakBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(245, 158, 11, 0.2)',
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+    marginRight: spacing.sm,
+  },
+  streakText: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: '700',
+    color: colors.secondary.main,
+    marginLeft: spacing.xs,
+  },
   settingsButton: {
     padding: spacing.sm,
+  },
+  titleRow: {
+    flexDirection: 'column',
+  },
+  tagline: {
+    fontSize: typography.fontSize.xs,
+    color: colors.primary.light,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    marginTop: spacing.xs,
+  },
+  offlineBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.status.warning,
+    paddingVertical: spacing.sm,
+  },
+  offlineBannerText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.primary,
+    marginLeft: spacing.sm,
+    fontWeight: '500',
   },
   content: {
     flex: 1,
@@ -283,5 +423,90 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.md,
     color: colors.text.tertiary,
     marginTop: spacing.xs,
+  },
+  successSection: {
+    marginTop: spacing.lg,
+  },
+  successScroll: {
+    paddingVertical: spacing.sm,
+    paddingRight: spacing.lg,
+  },
+  successCard: {
+    width: 180,
+    marginRight: spacing.md,
+  },
+  successHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  successAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: colors.primary.main,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: spacing.sm,
+  },
+  successInitial: {
+    fontSize: typography.fontSize.md,
+    fontWeight: '700',
+    color: 'white',
+  },
+  successName: {
+    fontSize: typography.fontSize.sm,
+    fontWeight: '600',
+    color: colors.text.primary,
+  },
+  successImprovement: {
+    fontSize: typography.fontSize.md,
+    fontWeight: '500',
+    color: colors.text.primary,
+    marginBottom: spacing.xs,
+  },
+  successMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  successSessions: {
+    fontSize: typography.fontSize.xs,
+    color: colors.status.success,
+    marginLeft: spacing.xs,
+  },
+  progressCard: {
+    marginTop: spacing.md,
+  },
+  progressContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  progressLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  progressText: {
+    marginLeft: spacing.md,
+  },
+  progressTitle: {
+    fontSize: typography.fontSize.md,
+    fontWeight: '600',
+    color: colors.text.primary,
+  },
+  progressDescription: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+  },
+  communityStats: {
+    alignItems: 'center',
+    marginTop: spacing.xl,
+    paddingVertical: spacing.md,
+  },
+  communityText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.tertiary,
+    textAlign: 'center',
   },
 });

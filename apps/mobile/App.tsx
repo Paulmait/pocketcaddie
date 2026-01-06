@@ -17,6 +17,8 @@ import {
 import { colors } from './src/constants/theme';
 import { ErrorBoundary } from './src/components/ErrorBoundary';
 import { RatingProvider } from './src/hooks/useRatingPrompt';
+import { initNetworkMonitoring } from './src/services/network';
+import { loadQueueFromStorage } from './src/services/uploadQueue';
 
 // Screens
 import { OnboardingScreen } from './src/screens/OnboardingScreen';
@@ -27,6 +29,8 @@ import { ProcessingScreen } from './src/screens/ProcessingScreen';
 import { ResultsScreen } from './src/screens/ResultsScreen';
 import { PaywallScreen } from './src/screens/PaywallScreen';
 import { SettingsScreen } from './src/screens/SettingsScreen';
+import { CameraScreen } from './src/screens/CameraScreen';
+import { ProgressScreen } from './src/screens/ProgressScreen';
 
 // Keep splash screen visible while loading
 SplashScreen.preventAutoHideAsync();
@@ -36,8 +40,10 @@ export type RootStackParamList = {
   Auth: undefined;
   Home: undefined;
   Upload: undefined;
+  Camera: undefined;
   Processing: { videoUri: string };
   Results: { analysisId: string };
+  Progress: undefined;
   Paywall: undefined;
   Settings: undefined;
 };
@@ -56,6 +62,12 @@ function AppContent() {
   useEffect(() => {
     async function prepare() {
       try {
+        // Initialize network monitoring
+        initNetworkMonitoring();
+
+        // Load upload queue from storage
+        await loadQueueFromStorage();
+
         // Initialize analytics first
         await initializeAnalytics();
 
@@ -140,8 +152,14 @@ function AppContent() {
         <Stack.Screen name="Auth" component={AuthScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Upload" component={UploadScreen} />
+        <Stack.Screen
+          name="Camera"
+          component={CameraScreen}
+          options={{ animation: 'slide_from_bottom' }}
+        />
         <Stack.Screen name="Processing" component={ProcessingScreen} />
         <Stack.Screen name="Results" component={ResultsScreen} />
+        <Stack.Screen name="Progress" component={ProgressScreen} />
         <Stack.Screen
           name="Paywall"
           component={PaywallScreen}

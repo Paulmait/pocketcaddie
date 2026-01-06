@@ -4,9 +4,21 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.0';
 
+// CORS configuration - in production, restrict to your app's domain
+const getAllowedOrigin = (req: Request) => {
+  const origin = req.headers.get('origin') || '';
+  const allowedOrigins = [
+    'http://localhost:8081', // Expo dev
+    'http://localhost:19006', // Expo web
+    'https://pocketcaddie.app', // Production domain
+  ];
+  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+};
+
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Origin': '*', // For Supabase Edge Functions, we need * for mobile apps
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 
 // Slice analysis system prompt
@@ -65,11 +77,32 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { videoPath, userId }: AnalyzeRequest = await req.json();
+    const body = await req.json();
 
+    // Input validation and sanitization
+    const videoPath = typeof body.videoPath === 'string' ? body.videoPath.trim() : '';
+    const userId = typeof body.userId === 'string' ? body.userId.trim() : '';
+
+    // Validate required fields
     if (!videoPath || !userId) {
       return new Response(
         JSON.stringify({ error: 'Missing videoPath or userId' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate path format to prevent path traversal attacks
+    if (videoPath.includes('..') || videoPath.includes('//') || !videoPath.match(/^[\w\-\/\.]+$/)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid video path format' }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Validate userId format (UUID format expected)
+    if (!userId.match(/^[\w\-]+$/) || userId.length > 100) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid user ID format' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
