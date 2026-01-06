@@ -37,6 +37,9 @@ import { CameraScreen } from './src/screens/CameraScreen';
 import { ProgressScreen } from './src/screens/ProgressScreen';
 import DrillLibraryScreen from './src/screens/DrillLibraryScreen';
 import DrillDetailScreen from './src/screens/DrillDetailScreen';
+import { HistoryScreen } from './src/screens/HistoryScreen';
+import { ComparisonScreen } from './src/screens/ComparisonScreen';
+import { VideoPlayerScreen } from './src/screens/VideoPlayerScreen';
 
 // Keep splash screen visible while loading
 SplashScreen.preventAutoHideAsync();
@@ -49,8 +52,11 @@ export type RootStackParamList = {
   Upload: undefined;
   Camera: undefined;
   Processing: { videoUri: string };
-  Results: { analysisId: string };
+  Results: { analysisId?: string };
   Progress: undefined;
+  History: undefined;
+  Comparison: { baselineId?: string; recentId?: string };
+  VideoPlayer: { analysisId: string; videoUri?: string };
   Paywall: undefined;
   Settings: undefined;
   DeleteAccount: undefined;
@@ -183,6 +189,13 @@ function AppContent() {
         <Stack.Screen name="Processing" component={ProcessingScreen} />
         <Stack.Screen name="Results" component={ResultsScreen} />
         <Stack.Screen name="Progress" component={ProgressScreen} />
+        <Stack.Screen name="History" component={HistoryScreen} />
+        <Stack.Screen name="Comparison" component={ComparisonScreen} />
+        <Stack.Screen
+          name="VideoPlayer"
+          component={VideoPlayerScreen}
+          options={{ presentation: 'modal' }}
+        />
         <Stack.Screen name="DrillLibrary" component={DrillLibraryScreen} />
         <Stack.Screen name="DrillDetail" component={DrillDetailScreen} />
         <Stack.Screen

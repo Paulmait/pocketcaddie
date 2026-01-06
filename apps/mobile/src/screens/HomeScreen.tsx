@@ -172,12 +172,50 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
         )}
 
+        {/* Quick Actions */}
+        {analyses.length > 0 && (
+          <View style={styles.quickActionsRow}>
+            <TouchableOpacity
+              style={styles.quickAction}
+              onPress={() => navigation.navigate('History')}
+            >
+              <View style={styles.quickActionIcon}>
+                <Ionicons name="time-outline" size={22} color={colors.primary.light} />
+              </View>
+              <Text style={styles.quickActionText}>History</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.quickAction}
+              onPress={() => navigation.navigate('Comparison')}
+            >
+              <View style={styles.quickActionIcon}>
+                <Ionicons name="git-compare-outline" size={22} color={colors.secondary.main} />
+              </View>
+              <Text style={styles.quickActionText}>Compare</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.quickAction}
+              onPress={() => navigation.navigate('DrillLibrary', {})}
+            >
+              <View style={styles.quickActionIcon}>
+                <Ionicons name="fitness-outline" size={22} color={colors.status.success} />
+              </View>
+              <Text style={styles.quickActionText}>Drills</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         {/* Past Analyses */}
         {analyses.length > 0 && (
           <View style={styles.analysesSection}>
-            <Text style={styles.sectionTitle}>Your Analyses</Text>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Recent Analyses</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('History')}>
+                <Text style={styles.viewAllLink}>View All</Text>
+              </TouchableOpacity>
+            </View>
             <FlatList
-              data={analyses}
+              data={analyses.slice(0, 3)}
               renderItem={renderAnalysisItem}
               keyExtractor={(item) => item.id}
               scrollEnabled={false}
@@ -508,5 +546,40 @@ const styles = StyleSheet.create({
     fontSize: typography.fontSize.sm,
     color: colors.text.tertiary,
     textAlign: 'center',
+  },
+  quickActionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: spacing.lg,
+  },
+  quickAction: {
+    alignItems: 'center',
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+  },
+  quickActionIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: colors.surface.glass,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.xs,
+  },
+  quickActionText: {
+    fontSize: typography.fontSize.sm,
+    color: colors.text.secondary,
+    fontWeight: '500',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  viewAllLink: {
+    fontSize: typography.fontSize.sm,
+    color: colors.primary.light,
+    fontWeight: '500',
   },
 });
