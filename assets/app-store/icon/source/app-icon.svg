@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0F1419"/>
+      <stop offset="100%" style="stop-color:#0B0F14"/>
+    </linearGradient>
+
+    <!-- Green accent gradient -->
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50"/>
+      <stop offset="100%" style="stop-color:#2E7D32"/>
+    </linearGradient>
+
+    <!-- Gold/Amber gradient -->
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FBBF24"/>
+      <stop offset="100%" style="stop-color:#F59E0B"/>
+    </linearGradient>
+
+    <!-- Glow effect -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background - solid fill, no transparency for App Store -->
+  <rect width="1024" height="1024" fill="url(#bgGradient)"/>
+
+  <!-- Subtle grid pattern suggesting golf course fairway -->
+  <g opacity="0.05">
+    <path d="M0 256 L1024 256" stroke="#4CAF50" stroke-width="1"/>
+    <path d="M0 384 L1024 384" stroke="#4CAF50" stroke-width="1"/>
+    <path d="M0 512 L1024 512" stroke="#4CAF50" stroke-width="1"/>
+    <path d="M0 640 L1024 640" stroke="#4CAF50" stroke-width="1"/>
+    <path d="M0 768 L1024 768" stroke="#4CAF50" stroke-width="1"/>
+  </g>
+
+  <!-- Golf swing arc - representing the swing path fix -->
+  <g filter="url(#glow)">
+    <!-- Outer swing arc (the "slice" path being corrected) -->
+    <path
+      d="M 300 700 Q 512 200 724 700"
+      fill="none"
+      stroke="url(#greenGradient)"
+      stroke-width="8"
+      stroke-linecap="round"
+      opacity="0.3"
+      stroke-dasharray="20 10"
+    />
+
+    <!-- Inner correct swing path -->
+    <path
+      d="M 350 650 Q 512 300 674 650"
+      fill="none"
+      stroke="url(#greenGradient)"
+      stroke-width="12"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <!-- Golf ball at impact point -->
+  <g transform="translate(512, 520)">
+    <!-- Ball shadow -->
+    <ellipse cx="5" cy="40" rx="35" ry="8" fill="#000" opacity="0.3"/>
+
+    <!-- Golf ball -->
+    <circle cx="0" cy="0" r="45" fill="#FFFFFF"/>
+
+    <!-- Ball dimples pattern -->
+    <g fill="#E5E5E5">
+      <circle cx="-15" cy="-20" r="6"/>
+      <circle cx="15" cy="-20" r="6"/>
+      <circle cx="0" cy="-8" r="6"/>
+      <circle cx="-20" cy="5" r="6"/>
+      <circle cx="20" cy="5" r="6"/>
+      <circle cx="-10" cy="18" r="6"/>
+      <circle cx="10" cy="18" r="6"/>
+    </g>
+
+    <!-- Highlight on ball -->
+    <circle cx="-12" cy="-12" r="12" fill="#FFF" opacity="0.6"/>
+  </g>
+
+  <!-- Stylized "P" for Pocket Caddie -->
+  <g transform="translate(512, 380)">
+    <!-- P letter background glow -->
+    <text
+      x="0"
+      y="0"
+      text-anchor="middle"
+      dominant-baseline="central"
+      font-family="-apple-system, SF Pro Display, system-ui, sans-serif"
+      font-size="280"
+      font-weight="800"
+      fill="url(#goldGradient)"
+      opacity="0.15"
+      filter="url(#glow)"
+    >P</text>
+
+    <!-- P letter main -->
+    <text
+      x="0"
+      y="0"
+      text-anchor="middle"
+      dominant-baseline="central"
+      font-family="-apple-system, SF Pro Display, system-ui, sans-serif"
+      font-size="220"
+      font-weight="800"
+      fill="url(#goldGradient)"
+    >P</text>
+  </g>
+
+  <!-- Target/aim indicator around ball -->
+  <g transform="translate(512, 520)" stroke="url(#greenGradient)" fill="none" stroke-width="3" opacity="0.7">
+    <!-- Crosshair marks -->
+    <line x1="0" y1="-70" x2="0" y2="-55"/>
+    <line x1="0" y1="55" x2="0" y2="70"/>
+    <line x1="-70" y1="0" x2="-55" y2="0"/>
+    <line x1="55" y1="0" x2="70" y2="0"/>
+
+    <!-- Corner brackets -->
+    <path d="M -55 -55 L -55 -45 M -55 -55 L -45 -55" stroke-width="4"/>
+    <path d="M 55 -55 L 55 -45 M 55 -55 L 45 -55" stroke-width="4"/>
+    <path d="M -55 55 L -55 45 M -55 55 L -45 55" stroke-width="4"/>
+    <path d="M 55 55 L 55 45 M 55 55 L 45 55" stroke-width="4"/>
+  </g>
+
+  <!-- "FIX" badge indicating the app's purpose -->
+  <g transform="translate(720, 750)">
+    <rect x="-60" y="-25" width="120" height="50" rx="25" fill="url(#greenGradient)"/>
+    <text
+      x="0"
+      y="5"
+      text-anchor="middle"
+      font-family="-apple-system, SF Pro Display, system-ui, sans-serif"
+      font-size="28"
+      font-weight="700"
+      fill="#FFFFFF"
+    >FIX</text>
+  </g>
+</svg>

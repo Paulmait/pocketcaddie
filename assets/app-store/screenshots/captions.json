@@ -1,0 +1,135 @@
+{
+  "$schema": "./captions.schema.json",
+  "version": "1.0.0",
+  "app": {
+    "name": "Pocket Caddie AI",
+    "tagline": "Fix Your Slice Fast"
+  },
+  "locale": "en-US",
+  "backgroundColor": "#0B0F14",
+  "primaryColor": "#4CAF50",
+  "accentColor": "#F59E0B",
+  "textColor": "#FFFFFF",
+  "subtitleColor": "#9CA3AF",
+  "screenshots": [
+    {
+      "id": "01-home",
+      "filename": "01-home.png",
+      "caption": "Fix Your Slice Fast",
+      "subtitle": "AI-powered swing analysis",
+      "screenName": "HomeScreen",
+      "priority": 1,
+      "compliance": {
+        "noMedicalClaims": true,
+        "noGuarantees": true,
+        "accurateFeatures": true
+      }
+    },
+    {
+      "id": "02-upload",
+      "filename": "02-upload.png",
+      "caption": "Easy Video Upload",
+      "subtitle": "Just 5-8 seconds needed",
+      "screenName": "UploadScreen",
+      "priority": 2,
+      "compliance": {
+        "noMedicalClaims": true,
+        "noGuarantees": true,
+        "accurateFeatures": true
+      }
+    },
+    {
+      "id": "03-camera",
+      "filename": "03-camera.png",
+      "caption": "Smart Recording Guide",
+      "subtitle": "Position guides for best results",
+      "screenName": "CameraScreen",
+      "priority": 3,
+      "compliance": {
+        "noMedicalClaims": true,
+        "noGuarantees": true,
+        "accurateFeatures": true
+      }
+    },
+    {
+      "id": "04-analysis",
+      "filename": "04-analysis.png",
+      "caption": "Instant AI Analysis",
+      "subtitle": "Identify your slice cause",
+      "screenName": "ProcessingScreen",
+      "priority": 4,
+      "compliance": {
+        "noMedicalClaims": true,
+        "noGuarantees": true,
+        "accurateFeatures": true
+      }
+    },
+    {
+      "id": "05-results",
+      "filename": "05-results.png",
+      "caption": "Personalized Insights",
+      "subtitle": "Drills tailored to your swing",
+      "screenName": "ResultsScreen",
+      "priority": 5,
+      "compliance": {
+        "noMedicalClaims": true,
+        "noGuarantees": true,
+        "accurateFeatures": true
+      }
+    },
+    {
+      "id": "06-progress",
+      "filename": "06-progress.png",
+      "caption": "Track Your Progress",
+      "subtitle": "See your improvement over time",
+      "screenName": "ProgressScreen",
+      "priority": 6,
+      "compliance": {
+        "noMedicalClaims": true,
+        "noGuarantees": true,
+        "accurateFeatures": true
+      }
+    }
+  ],
+  "deviceSizes": {
+    "iphone-6.7": {
+      "width": 1290,
+      "height": 2796,
+      "name": "iPhone 6.7\"",
+      "required": true
+    },
+    "iphone-6.5": {
+      "width": 1284,
+      "height": 2778,
+      "name": "iPhone 6.5\"",
+      "required": false
+    },
+    "iphone-5.5": {
+      "width": 1242,
+      "height": 2208,
+      "name": "iPhone 5.5\"",
+      "required": false
+    }
+  },
+  "layout": {
+    "captionFontSize": 72,
+    "subtitleFontSize": 42,
+    "captionPaddingTop": 100,
+    "captionSpacing": 60,
+    "screenshotPaddingTop": 220,
+    "screenshotPaddingBottom": 60,
+    "screenshotPaddingX": 40,
+    "cornerRadius": 40
+  },
+  "compliance": {
+    "notes": [
+      "No 'FREE', 'NEW', 'AI' text in icon",
+      "No pricing text in screenshots",
+      "No guarantees or promises of specific results",
+      "No medical or health claims",
+      "No competitor comparisons",
+      "No Apple device frames (using custom presentation)",
+      "All screenshots show real app UI"
+    ]
+  }
+}
