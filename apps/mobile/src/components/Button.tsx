@@ -6,10 +6,11 @@ import {
   ActivityIndicator,
   ViewStyle,
   TextStyle,
+  View,
 } from 'react-native';
 import { colors, spacing, borderRadius, typography } from '../constants/theme';
 
-interface ButtonProps {
+export interface ButtonProps {
   title: string;
   onPress: () => void;
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
@@ -21,6 +22,7 @@ interface ButtonProps {
   textStyle?: TextStyle;
   accessibilityLabel?: string;
   accessibilityHint?: string;
+  icon?: React.ReactNode;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -35,6 +37,7 @@ export const Button: React.FC<ButtonProps> = ({
   textStyle,
   accessibilityLabel,
   accessibilityHint,
+  icon,
 }) => {
   const getVariantStyles = (): ViewStyle => {
     switch (variant) {
@@ -135,15 +138,18 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? (
         <ActivityIndicator color={getTextColor()} />
       ) : (
-        <Text
-          style={[
-            styles.text,
-            { color: getTextColor(), fontSize: getTextSize() },
-            textStyle,
-          ]}
-        >
-          {title}
-        </Text>
+        <View style={styles.content}>
+          {icon && <View style={styles.iconContainer}>{icon}</View>}
+          <Text
+            style={[
+              styles.text,
+              { color: getTextColor(), fontSize: getTextSize() },
+              textStyle,
+            ]}
+          >
+            {title}
+          </Text>
+        </View>
       )}
     </TouchableOpacity>
   );
@@ -161,6 +167,14 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.5,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconContainer: {
+    marginRight: spacing.sm,
   },
   text: {
     fontWeight: typography.fontWeight.semibold,

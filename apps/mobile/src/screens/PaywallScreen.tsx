@@ -114,11 +114,11 @@ export const PaywallScreen: React.FC<PaywallScreenProps> = ({ navigation }) => {
   };
 
   const openTerms = () => {
-    Linking.openURL('https://slicefixai.com/terms');
+    Linking.openURL('https://paulmait.github.io/pocketcaddie/legal/terms.html');
   };
 
   const openPrivacy = () => {
-    Linking.openURL('https://slicefixai.com/privacy');
+    Linking.openURL('https://paulmait.github.io/pocketcaddie/legal/privacy.html');
   };
 
   const openManageSubscription = () => {

@@ -10,7 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { colors, spacing, borderRadius, typography } from '../constants/theme';
-import { GlassCard, DrillCard } from '../components';
+import { DrillCard } from '../components';
 import { useAppStore } from '../store/useAppStore';
 import {
   DRILL_LIBRARY,
@@ -20,11 +20,7 @@ import {
   type RootCauseType,
   type LibraryDrill,
 } from '../data/drillLibrary';
-
-type RootStackParamList = {
-  DrillLibrary: { filterCause?: RootCauseType };
-  DrillDetail: { drillId: string };
-};
+import { RootStackParamList } from '../../App';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DrillLibrary'>;
 
@@ -39,7 +35,7 @@ export default function DrillLibraryScreen({ navigation, route }: Props) {
   const analyses = useAppStore((state) => state.analyses);
   const drillPracticeLog = useAppStore((state) => state.drillPracticeLog ?? []);
 
-  const initialFilter = route.params?.filterCause ?? null;
+  const initialFilter = (route.params?.filterCause as RootCauseType | undefined) ?? null;
   const [selectedCause, setSelectedCause] = useState<RootCauseType | null>(
     initialFilter
   );

@@ -60,7 +60,7 @@ export const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
 
   const handleViewAnalysis = (analysis: SwingAnalysis) => {
     setCurrentAnalysis(analysis);
-    navigation.navigate('Results');
+    navigation.navigate('Results', { analysisId: analysis.id });
   };
 
   const handleDeleteAnalysis = (analysis: SwingAnalysis) => {

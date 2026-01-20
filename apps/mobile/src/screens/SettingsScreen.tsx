@@ -131,11 +131,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
   };
 
   const handleOpenPrivacy = () => {
-    Linking.openURL('https://slicefixai.com/privacy');
+    Linking.openURL('https://paulmait.github.io/pocketcaddie/legal/privacy.html');
   };
 
   const handleOpenTerms = () => {
-    Linking.openURL('https://slicefixai.com/terms');
+    Linking.openURL('https://paulmait.github.io/pocketcaddie/legal/terms.html');
   };
 
   const handleContact = () => {

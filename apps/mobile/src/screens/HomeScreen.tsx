@@ -186,7 +186,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.quickAction}
-              onPress={() => navigation.navigate('Comparison')}
+              onPress={() => navigation.navigate('Comparison', {})}
             >
               <View style={styles.quickActionIcon}>
                 <Ionicons name="git-compare-outline" size={22} color={colors.secondary.main} />
