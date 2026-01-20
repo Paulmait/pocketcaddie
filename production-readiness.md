@@ -1,10 +1,10 @@
 # SliceFix AI - Production Readiness Report
 ## Complete App Store Submission Audit
 
-**Date:** January 5, 2026
+**Date:** January 20, 2026 (Updated)
 **Auditor:** Senior Mobile QA Engineer / iOS Release Manager
 **App Version:** 1.0.0
-**Build:** 1
+**Build:** 2
 
 ---
 
@@ -55,6 +55,16 @@ The SliceFix AI mobile application has undergone a comprehensive 8-phase product
 ### 6. Accessibility Improvements (Phase 6)
 - Added minHeight: 44 to all Button sizes (Apple HIG compliance)
 - Added accessibility props to Button component
+
+### 7. Production QC Fixes (January 20, 2026)
+- Added icon prop support to Button component (ComparisonScreen fix)
+- Fixed DrillLibraryScreen to import RootStackParamList from App.tsx
+- Fixed HistoryScreen navigation params type error
+- Fixed HomeScreen Comparison navigation params
+- Updated PaywallScreen legal URLs to GitHub Pages
+- Updated SettingsScreen legal URLs to GitHub Pages
+- Installed @react-native-community/slider dependency
+- Created comprehensive QC_REPORT.md
 
 ---
 
@@ -143,9 +153,9 @@ The SliceFix AI mobile application has undergone a comprehensive 8-phase product
    - [ ] Verify pricing matches app constants
 
 4. **Legal Pages**
-   - [ ] Deploy privacy policy to slicefixai.com/privacy
-   - [ ] Deploy terms of service to slicefixai.com/terms
-   - [ ] Verify links work in app
+   - [x] Privacy policy deployed to GitHub Pages
+   - [x] Terms of service deployed to GitHub Pages
+   - [x] App URLs updated to GitHub Pages (PaywallScreen, SettingsScreen)
 
 5. **Build & Submit**
    - [ ] Run `eas build --platform ios`
@@ -177,6 +187,7 @@ The following documents were generated during this audit:
 | SECURITY_AUDIT.md | Security and privacy assessment |
 | ACCESSIBILITY_AUDIT.md | Accessibility compliance review |
 | APP_STORE_REVIEW_PREP.md | App Store submission preparation |
+| QC_REPORT.md | Comprehensive QC report with fixes |
 | production-readiness.md | This document - final summary |
 
 ---
@@ -211,6 +222,7 @@ This audit certifies that SliceFix AI version 1.0.0 (build 1) has been thoroughl
 
 ### Key Files Modified
 ```
+# Initial audit fixes
 apps/mobile/src/hooks/useRatingPrompt.tsx (renamed from .ts)
 apps/mobile/src/hooks/useShakeDetector.ts
 apps/mobile/src/hooks/useProgressTracking.ts
@@ -227,6 +239,15 @@ apps/mobile/src/screens/HomeScreen.tsx
 apps/mobile/.eslintrc.js (new)
 apps/api/supabase/functions/cleanup-videos/index.ts
 apps/api/supabase/functions/delete-account/index.ts
+
+# January 20, 2026 QC fixes
+apps/mobile/src/components/Button.tsx (icon prop added)
+apps/mobile/src/screens/DrillLibraryScreen.tsx (type import fix)
+apps/mobile/src/screens/HistoryScreen.tsx (navigation fix)
+apps/mobile/src/screens/HomeScreen.tsx (navigation fix)
+apps/mobile/src/screens/PaywallScreen.tsx (URL update)
+apps/mobile/src/screens/SettingsScreen.tsx (URL update)
+apps/mobile/package.json (slider dependency)
 ```
 
 ### Commands to Run
