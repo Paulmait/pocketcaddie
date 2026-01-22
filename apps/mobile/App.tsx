@@ -40,6 +40,7 @@ import DrillDetailScreen from './src/screens/DrillDetailScreen';
 import { HistoryScreen } from './src/screens/HistoryScreen';
 import { ComparisonScreen } from './src/screens/ComparisonScreen';
 import { VideoPlayerScreen } from './src/screens/VideoPlayerScreen';
+import { EditProfileScreen } from './src/screens/EditProfileScreen';
 
 // Keep splash screen visible while loading
 SplashScreen.preventAutoHideAsync();
@@ -59,6 +60,7 @@ export type RootStackParamList = {
   VideoPlayer: { analysisId: string; videoUri?: string };
   Paywall: undefined;
   Settings: undefined;
+  EditProfile: undefined;
   DeleteAccount: undefined;
   DrillLibrary: { filterCause?: string };
   DrillDetail: { drillId: string };
@@ -204,6 +206,7 @@ function AppContent() {
           options={{ presentation: 'modal' }}
         />
         <Stack.Screen name="Settings" component={SettingsScreen} />
+        <Stack.Screen name="EditProfile" component={EditProfileScreen} />
         <Stack.Screen
           name="DeleteAccount"
           component={DeleteAccountScreen}

@@ -181,6 +181,47 @@ export async function signInWithApple(
 }
 
 // ============================================
+// Password Authentication (for demo/review accounts)
+// ============================================
+
+/**
+ * Sign in with email and password
+ * Used for demo accounts during App Store review
+ */
+export async function signInWithPassword(
+  email: string,
+  password: string
+): Promise<AuthResult> {
+  if (!email || !email.includes('@')) {
+    return { success: false, error: 'Please enter a valid email address' };
+  }
+
+  if (!password || password.length < 6) {
+    return { success: false, error: 'Please enter your password' };
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.toLowerCase().trim(),
+    password,
+  });
+
+  if (error) {
+    console.error('[Auth] signInWithPassword error:', error.message);
+    return { success: false, error: 'Invalid email or password' };
+  }
+
+  if (!data.user) {
+    return { success: false, error: 'Sign in failed. Please try again.' };
+  }
+
+  return {
+    success: true,
+    user: mapSupabaseUser(data.user),
+    session: data.session ? mapSupabaseSession(data.session) : undefined,
+  };
+}
+
+// ============================================
 // Sign Out
 // ============================================
 

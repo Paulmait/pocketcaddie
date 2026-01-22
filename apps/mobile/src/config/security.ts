@@ -48,11 +48,13 @@ export const AUTH_CONFIG = {
 };
 
 // App Store Review Demo Account
-// This email receives automatic premium access for Apple App Store review
+// This account has automatic premium access for Apple App Store review
 export const DEMO_CONFIG = {
   // Demo account email for App Store review
   REVIEW_EMAIL: 'appstore-review@cienrios.com',
-  // Demo OTP code for App Store review (bypasses email verification)
+  // Demo account password (for password-based login)
+  REVIEW_PASSWORD: 'SliceFix2026!Review',
+  // Demo OTP code for App Store review (fallback if using OTP)
   REVIEW_OTP: '123456',
   // Whether demo mode is enabled (set to false for non-review builds)
   ENABLED: true,

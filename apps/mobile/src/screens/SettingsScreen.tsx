@@ -171,7 +171,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         <GlassCard style={styles.section}>
           {user ? (
             <>
-              <View style={styles.accountInfo}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('EditProfile')}
+                style={styles.accountInfo}
+              >
                 <View style={styles.avatar}>
                   <Ionicons name="person" size={24} color={colors.text.secondary} />
                 </View>
@@ -180,10 +183,11 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                     {user.email || 'Apple ID User'}
                   </Text>
                   <Text style={styles.accountId}>
-                    ID: {user.id.substring(0, 8)}...
+                    Tap to edit profile
                   </Text>
                 </View>
-              </View>
+                <Ionicons name="chevron-forward" size={20} color={colors.text.tertiary} />
+              </TouchableOpacity>
               <SettingsItem
                 icon="log-out-outline"
                 title="Sign Out"

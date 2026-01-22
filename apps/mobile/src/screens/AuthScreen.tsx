@@ -18,7 +18,7 @@ import { RootStackParamList } from '../../App';
 import { Button } from '../components/Button';
 import { GlassCard } from '../components/GlassCard';
 import { useAppStore } from '../store/useAppStore';
-import { signInWithApple, signInWithEmail, verifyOtp } from '../services/supabase';
+import { signInWithApple, signInWithEmail, verifyOtp, signInWithPassword } from '../services/supabase';
 import { setUserId } from '../services/subscriptions';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 import { isDemoReviewAccount, isDemoReviewOtp, DEMO_CONFIG } from '../config/security';
@@ -29,8 +29,10 @@ type AuthScreenProps = {
 
 export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const setUser = useAppStore((s) => s.setUser);
   const setSubscription = useAppStore((s) => s.setSubscription);
@@ -87,12 +89,12 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
     try {
       setLoading(true);
 
-      // Demo account bypass - don't send actual OTP
+      // Demo account - use password authentication
       if (isDemoReviewAccount(email)) {
-        setShowOtpInput(true);
+        setShowPasswordInput(true);
         Alert.alert(
           'Demo Account',
-          'Enter the demo verification code: 123456'
+          'Enter the demo password to continue.'
         );
         return;
       }
@@ -110,6 +112,40 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
     }
   };
 
+  const handlePasswordSignIn = async () => {
+    if (!password.trim()) {
+      Alert.alert('Password Required', 'Please enter your password.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const { user } = await signInWithPassword(email, password);
+
+      if (user) {
+        setUser({
+          id: user.id,
+          email: user.email,
+          createdAt: user.created_at,
+        });
+
+        // Grant premium access for demo account
+        if (isDemoReviewAccount(email)) {
+          setSubscription('annual', false, undefined);
+          console.log('[AuthScreen] Demo review account signed in with premium access');
+        }
+
+        await setUserId(user.id);
+        navigation.replace('Home');
+      }
+    } catch (error: any) {
+      Alert.alert('Sign In Failed', error.message || 'Invalid email or password.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleVerifyOtp = async () => {
     if (!otp.trim()) {
       Alert.alert('Code Required', 'Please enter the verification code.');
@@ -119,7 +155,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
     try {
       setLoading(true);
 
-      // Demo account bypass - create mock session
+      // Demo account bypass - create mock session (fallback for OTP method)
       if (isDemoReviewOtp(email, otp)) {
         const demoUserId = 'demo-review-user-' + Date.now();
         setUser({
@@ -188,7 +224,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
           </View>
 
           <GlassCard style={styles.emailCard}>
-            {!showOtpInput ? (
+            {!showOtpInput && !showPasswordInput ? (
               <>
                 <Text style={styles.inputLabel}>Email</Text>
                 <TextInput
@@ -207,6 +243,35 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
                   loading={loading}
                   fullWidth
                   variant="outline"
+                />
+              </>
+            ) : showPasswordInput ? (
+              <>
+                <Text style={styles.inputLabel}>Password</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Enter password"
+                  placeholderTextColor={colors.text.tertiary}
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <Button
+                  title="Sign In"
+                  onPress={handlePasswordSignIn}
+                  loading={loading}
+                  fullWidth
+                />
+                <Button
+                  title="Back"
+                  onPress={() => {
+                    setShowPasswordInput(false);
+                    setPassword('');
+                  }}
+                  variant="ghost"
+                  style={styles.backButton}
                 />
               </>
             ) : (
