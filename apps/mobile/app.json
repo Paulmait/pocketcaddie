@@ -13,6 +13,7 @@
       "backgroundColor": "#0B0F14"
     },
     "assetBundlePatterns": ["**/*"],
+    "newArchEnabled": false,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.cienrios.pocketcaddieai",

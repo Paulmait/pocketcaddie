@@ -43,7 +43,13 @@
       "Bash(for file in apps/admin/README.md)",
       "Bash(eas init:*)",
       "Bash(npm ls:*)",
-      "Bash(eas project:info:*)"
+      "Bash(eas project:info:*)",
+      "Bash(eas build:*)",
+      "Bash(timeout:*)",
+      "Bash(supabase:*)",
+      "Bash(git commit:*)",
+      "Bash(eas build:list:*)",
+      "Bash(npx eas-cli:*)"
     ]
   }
 }
