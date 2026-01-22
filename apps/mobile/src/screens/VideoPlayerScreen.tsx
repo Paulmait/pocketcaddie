@@ -25,9 +25,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
-import Slider from '@react-native-community/slider';
 
 import { RootStackParamList } from '../../App';
+import { VideoSlider } from '../components/VideoSlider';
 import { GlassCard } from '../components/GlassCard';
 import { useAppStore } from '../store/useAppStore';
 import { useFeatureFlag } from '../hooks/useFeatureFlags';
@@ -237,7 +237,7 @@ export const VideoPlayerScreen: React.FC<VideoPlayerScreenProps> = ({
         {/* Timeline */}
         <View style={styles.timelineContainer}>
           <Text style={styles.timeText}>{formatTime(position)}</Text>
-          <Slider
+          <VideoSlider
             style={styles.slider}
             minimumValue={0}
             maximumValue={duration || 1}
