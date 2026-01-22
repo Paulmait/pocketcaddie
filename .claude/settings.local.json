@@ -49,7 +49,8 @@
       "Bash(supabase:*)",
       "Bash(git commit:*)",
       "Bash(eas build:list:*)",
-      "Bash(npx eas-cli:*)"
+      "Bash(npx eas-cli:*)",
+      "Bash(npm run lint)"
     ]
   }
 }

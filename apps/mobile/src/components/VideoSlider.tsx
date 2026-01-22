@@ -11,7 +11,6 @@ import {
   StyleSheet,
   PanResponder,
   GestureResponderEvent,
-  PanResponderGestureState,
   LayoutChangeEvent,
 } from 'react-native';
 import { colors } from '../constants/theme';
@@ -92,6 +91,10 @@ export const VideoSlider: React.FC<VideoSliderProps> = ({
       ? (localValue - minimumValue) / (maximumValue - minimumValue)
       : 0;
 
+  // Calculate pixel-based positions (React Native doesn't support % for left)
+  const filledWidth = sliderWidth * progress;
+  const thumbPosition = sliderWidth * progress - 10; // -10 for thumb center
+
   return (
     <View
       style={[styles.container, style]}
@@ -111,7 +114,7 @@ export const VideoSlider: React.FC<VideoSliderProps> = ({
           styles.filledTrack,
           {
             backgroundColor: minimumTrackTintColor,
-            width: `${progress * 100}%`,
+            width: filledWidth,
           },
         ]}
       />
@@ -121,7 +124,7 @@ export const VideoSlider: React.FC<VideoSliderProps> = ({
           styles.thumb,
           {
             backgroundColor: thumbTintColor,
-            left: `${progress * 100}%`,
+            left: Math.max(0, thumbPosition),
           },
         ]}
       />
@@ -153,7 +156,6 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     position: 'absolute',
-    marginLeft: -10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
