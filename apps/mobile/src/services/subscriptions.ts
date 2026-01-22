@@ -8,25 +8,45 @@ import { SUBSCRIPTION_SKUS } from '../constants';
 import { isDemoReviewAccount } from '../config/security';
 
 // RevenueCat API keys - replace with your keys
-const REVENUECAT_IOS_KEY = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY || 'your-ios-key';
-const REVENUECAT_ANDROID_KEY = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY || 'your-android-key';
+const REVENUECAT_IOS_KEY = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY || '';
+const REVENUECAT_ANDROID_KEY = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY || '';
 
 const ENTITLEMENT_ID = 'premium';
+
+// Track if RevenueCat is initialized
+let isRevenueCatInitialized = false;
 
 export const initializePurchases = async (userId?: string) => {
   const apiKey = Platform.OS === 'ios' ? REVENUECAT_IOS_KEY : REVENUECAT_ANDROID_KEY;
 
-  await Purchases.configure({
-    apiKey,
-    appUserID: userId,
-  });
+  // Skip initialization if no valid API key
+  if (!apiKey || apiKey === 'your-ios-key' || apiKey === 'your-android-key') {
+    console.warn('[Subscriptions] RevenueCat API key not configured, skipping initialization');
+    return;
+  }
+
+  try {
+    await Purchases.configure({
+      apiKey,
+      appUserID: userId,
+    });
+    isRevenueCatInitialized = true;
+  } catch (error) {
+    console.error('[Subscriptions] Failed to initialize RevenueCat:', error);
+  }
 };
 
 export const setUserId = async (userId: string) => {
-  await Purchases.logIn(userId);
+  if (!isRevenueCatInitialized) return;
+  try {
+    await Purchases.logIn(userId);
+  } catch (error) {
+    console.error('[Subscriptions] Error setting user ID:', error);
+  }
 };
 
 export const getOfferings = async (): Promise<PurchasesOffering | null> => {
+  if (!isRevenueCatInitialized) return null;
   try {
     const offerings = await Purchases.getOfferings();
     return offerings.current;
@@ -37,18 +57,30 @@ export const getOfferings = async (): Promise<PurchasesOffering | null> => {
 };
 
 export const purchasePackage = async (pkg: PurchasesPackage): Promise<CustomerInfo> => {
+  if (!isRevenueCatInitialized) {
+    throw new Error('RevenueCat not initialized');
+  }
   const { customerInfo } = await Purchases.purchasePackage(pkg);
   return customerInfo;
 };
 
 export const restorePurchases = async (): Promise<CustomerInfo> => {
+  if (!isRevenueCatInitialized) {
+    throw new Error('RevenueCat not initialized');
+  }
   const customerInfo = await Purchases.restorePurchases();
   return customerInfo;
 };
 
-export const getCustomerInfo = async (): Promise<CustomerInfo> => {
-  const customerInfo = await Purchases.getCustomerInfo();
-  return customerInfo;
+export const getCustomerInfo = async (): Promise<CustomerInfo | null> => {
+  if (!isRevenueCatInitialized) return null;
+  try {
+    const customerInfo = await Purchases.getCustomerInfo();
+    return customerInfo;
+  } catch (error) {
+    console.error('[Subscriptions] Error getting customer info:', error);
+    return null;
+  }
 };
 
 export const checkSubscriptionStatus = async (userEmail?: string | null): Promise<{
@@ -62,6 +94,16 @@ export const checkSubscriptionStatus = async (userEmail?: string | null): Promis
     return {
       isSubscribed: true,
       subscriptionType: 'annual',
+      trialActive: false,
+      expirationDate: null,
+    };
+  }
+
+  // If RevenueCat not initialized, return free tier
+  if (!isRevenueCatInitialized) {
+    return {
+      isSubscribed: false,
+      subscriptionType: null,
       trialActive: false,
       expirationDate: null,
     };
@@ -108,6 +150,9 @@ export const checkSubscriptionStatus = async (userEmail?: string | null): Promis
 export const addCustomerInfoListener = (
   callback: (info: CustomerInfo) => void
 ): (() => void) => {
+  if (!isRevenueCatInitialized) {
+    return () => {}; // No-op cleanup
+  }
   Purchases.addCustomerInfoUpdateListener(callback);
   return () => {
     // RevenueCat SDK handles cleanup internally
