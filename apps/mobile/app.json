@@ -20,7 +20,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "SliceFix AI needs camera access to record your golf swing for analysis.",
         "NSPhotoLibraryUsageDescription": "SliceFix AI needs photo library access to select swing videos for analysis.",
-        "NSMicrophoneUsageDescription": "SliceFix AI needs microphone access when recording swing videos."
+        "NSMicrophoneUsageDescription": "SliceFix AI needs microphone access when recording swing videos.",
+        "NSFaceIDUsageDescription": "SliceFix AI uses Face ID for quick and secure sign-in to your account."
       },
       "usesAppleSignIn": true,
       "config": {
@@ -37,6 +38,12 @@
     "plugins": [
       "expo-router",
       "expo-apple-authentication",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow SliceFix AI to use Face ID for quick sign-in."
+        }
+      ],
       [
         "expo-camera",
         {

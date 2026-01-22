@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   Alert,
   Platform,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -22,6 +23,12 @@ import { signInWithApple, signInWithEmail, verifyOtp, signInWithPassword } from 
 import { setUserId } from '../services/subscriptions';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 import { isDemoReviewAccount, isDemoReviewOtp, DEMO_CONFIG } from '../config/security';
+import {
+  checkBiometricAvailability,
+  biometricLogin,
+  isBiometricEnabled,
+  enableBiometric,
+} from '../services/biometrics';
 
 type AuthScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Auth'>;
@@ -34,8 +41,50 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
+  const [biometricType, setBiometricType] = useState('Biometrics');
   const setUser = useAppStore((s) => s.setUser);
   const setSubscription = useAppStore((s) => s.setSubscription);
+
+  // Check biometric availability on mount
+  useEffect(() => {
+    async function checkBiometrics() {
+      const { available, enrolled, biometricType: type } = await checkBiometricAvailability();
+      setBiometricAvailable(available && enrolled);
+      setBiometricType(type);
+
+      if (available && enrolled) {
+        const enabled = await isBiometricEnabled();
+        setBiometricEnabled(enabled);
+      }
+    }
+    checkBiometrics();
+  }, []);
+
+  const handleBiometricLogin = async () => {
+    try {
+      setLoading(true);
+      const result = await biometricLogin();
+
+      if (result.success && result.user) {
+        setUser({
+          id: result.user.id,
+          email: result.user.email,
+          createdAt: new Date().toISOString(),
+        });
+
+        await setUserId(result.user.id);
+        navigation.replace('Home');
+      } else if (result.error !== 'Cancelled') {
+        Alert.alert('Biometric Login Failed', result.error || 'Please try again.');
+      }
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Biometric login failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAppleSignIn = async () => {
     try {
@@ -207,6 +256,24 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
         </View>
 
         <View style={styles.authOptions}>
+          {/* Biometric Login Button */}
+          {biometricAvailable && biometricEnabled && (
+            <TouchableOpacity
+              style={styles.biometricButton}
+              onPress={handleBiometricLogin}
+              disabled={loading}
+            >
+              <Ionicons
+                name={biometricType === 'Face ID' ? 'scan' : 'finger-print'}
+                size={32}
+                color={colors.primary.light}
+              />
+              <Text style={styles.biometricText}>
+                Sign in with {biometricType}
+              </Text>
+            </TouchableOpacity>
+          )}
+
           {Platform.OS === 'ios' && (
             <AppleAuthentication.AppleAuthenticationButton
               buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
@@ -348,6 +415,23 @@ const styles = StyleSheet.create({
   },
   authOptions: {
     flex: 1,
+  },
+  biometricButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface.glass,
+    borderRadius: borderRadius.md,
+    paddingVertical: spacing.md,
+    marginBottom: spacing.md,
+    borderWidth: 1,
+    borderColor: colors.primary.main,
+  },
+  biometricText: {
+    fontSize: typography.fontSize.md,
+    fontWeight: typography.fontWeight.medium,
+    color: colors.primary.light,
+    marginLeft: spacing.sm,
   },
   appleButton: {
     width: '100%',

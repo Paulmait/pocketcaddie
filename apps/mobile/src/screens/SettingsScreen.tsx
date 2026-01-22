@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Linking,
+  Switch,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -19,6 +20,12 @@ import { useAppStore } from '../store/useAppStore';
 import { signOut } from '../services/supabase';
 import { restorePurchases } from '../services/subscriptions';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import {
+  checkBiometricAvailability,
+  isBiometricEnabled,
+  enableBiometric,
+  disableBiometric,
+} from '../services/biometrics';
 
 type SettingsScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Settings'>;
@@ -67,6 +74,10 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
 
 export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) => {
   const [restoring, setRestoring] = useState(false);
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
+  const [biometricType, setBiometricType] = useState('Biometrics');
+  const [togglingBiometric, setTogglingBiometric] = useState(false);
 
   const {
     user,
@@ -77,6 +88,53 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
     setSubscription,
     clearAllData,
   } = useAppStore();
+
+  // Check biometric availability on mount
+  useEffect(() => {
+    async function checkBiometrics() {
+      const { available, enrolled, biometricType: type } = await checkBiometricAvailability();
+      setBiometricAvailable(available && enrolled);
+      setBiometricType(type);
+
+      if (available && enrolled) {
+        const enabled = await isBiometricEnabled();
+        setBiometricEnabled(enabled);
+      }
+    }
+    checkBiometrics();
+  }, []);
+
+  const handleToggleBiometric = async (value: boolean) => {
+    if (!user) return;
+
+    try {
+      setTogglingBiometric(true);
+
+      if (value) {
+        // Enable biometrics
+        const success = await enableBiometric({
+          id: user.id,
+          email: user.email || '',
+        });
+
+        if (success) {
+          setBiometricEnabled(true);
+          Alert.alert('Success', `${biometricType} login enabled!`);
+        } else {
+          Alert.alert('Failed', `Could not enable ${biometricType}. Please try again.`);
+        }
+      } else {
+        // Disable biometrics
+        await disableBiometric();
+        setBiometricEnabled(false);
+        Alert.alert('Disabled', `${biometricType} login has been disabled.`);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update biometric settings.');
+    } finally {
+      setTogglingBiometric(false);
+    }
+  };
 
   const handleSignOut = async () => {
     Alert.alert(
@@ -188,6 +246,31 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color={colors.text.tertiary} />
               </TouchableOpacity>
+              {/* Biometric Login Toggle */}
+              {biometricAvailable && (
+                <View style={styles.biometricRow}>
+                  <View style={styles.settingsItemLeft}>
+                    <Ionicons
+                      name={biometricType === 'Face ID' ? 'scan-outline' : 'finger-print-outline'}
+                      size={22}
+                      color={colors.text.secondary}
+                    />
+                    <View style={styles.settingsItemText}>
+                      <Text style={styles.settingsItemTitle}>{biometricType} Login</Text>
+                      <Text style={styles.settingsItemSubtitle}>
+                        Quick sign-in with {biometricType}
+                      </Text>
+                    </View>
+                  </View>
+                  <Switch
+                    value={biometricEnabled}
+                    onValueChange={handleToggleBiometric}
+                    disabled={togglingBiometric}
+                    trackColor={{ false: colors.surface.glass, true: colors.primary.main }}
+                    thumbColor={colors.text.primary}
+                  />
+                </View>
+              )}
               <SettingsItem
                 icon="log-out-outline"
                 title="Sign Out"
@@ -381,6 +464,15 @@ const styles = StyleSheet.create({
     margin: spacing.md,
   },
   settingsItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.surface.glassBorder,
+  },
+  biometricRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
