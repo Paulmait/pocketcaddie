@@ -21,18 +21,39 @@ SliceFix AI helps golfers identify and fix their slice through AI-powered swing 
 
 ## Demo Account
 
-**No demo account required.** The app supports Sign in with Apple for frictionless testing.
+A demo account is provided with **full premium access** for review testing. No real email required.
 
-### Test Flow
+### Demo Account Credentials
 
-1. Launch app → View onboarding (3 screens)
-2. Sign in with Apple (or skip to limited mode)
-3. View paywall → Use sandbox account to subscribe
-4. Upload provided sample swing video
-5. View analysis results
-6. Complete 10-Swing Challenge
-7. Share Swing Report
-8. Test account deletion in Settings
+| Field | Value |
+|-------|-------|
+| **Email** | `appstore-review@cienrios.com` |
+| **Verification Code** | `123456` |
+
+**Note:** This demo account does NOT require real email access. Simply enter the email and verification code above. The app will automatically grant premium access.
+
+### Test Flow (Using Demo Account)
+
+1. Launch app → Complete onboarding (3 screens)
+2. Tap "Sign In"
+3. Enter email: `appstore-review@cienrios.com`
+4. Tap "Continue with Email"
+5. You'll see: "Enter the demo verification code: 123456"
+6. Enter: `123456`
+7. Tap "Verify" → You now have full premium access
+8. Upload provided sample swing video (or tap "Use Sample Video")
+9. View analysis results with AI-generated insights
+10. Complete 10-Swing Challenge checklist
+11. Share Swing Report card
+12. Test Settings and account features
+
+### Alternative Testing (Sandbox Subscription)
+
+If you prefer to test the actual subscription flow:
+1. Sign in with your Sandbox Apple ID
+2. Navigate to paywall
+3. Subscribe using sandbox account
+4. All subscription features will be available
 
 ---
 
@@ -189,7 +210,7 @@ See `privacy-data-map.md` for complete data handling details.
 
 ## Contact for Review Questions
 
-**Email**: review@slicefixai.com
+**Email**: support@cienrios.com
 **Response Time**: Within 24 hours
 
 ---

@@ -5,6 +5,7 @@ import Purchases, {
 } from 'react-native-purchases';
 import { Platform } from 'react-native';
 import { SUBSCRIPTION_SKUS } from '../constants';
+import { isDemoReviewAccount } from '../config/security';
 
 // RevenueCat API keys - replace with your keys
 const REVENUECAT_IOS_KEY = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY || 'your-ios-key';
@@ -50,12 +51,22 @@ export const getCustomerInfo = async (): Promise<CustomerInfo> => {
   return customerInfo;
 };
 
-export const checkSubscriptionStatus = async (): Promise<{
+export const checkSubscriptionStatus = async (userEmail?: string | null): Promise<{
   isSubscribed: boolean;
   subscriptionType: 'monthly' | 'annual' | null;
   trialActive: boolean;
   expirationDate: string | null;
 }> => {
+  // Check for demo review account (for App Store review)
+  if (isDemoReviewAccount(userEmail)) {
+    return {
+      isSubscribed: true,
+      subscriptionType: 'annual',
+      trialActive: false,
+      expirationDate: null,
+    };
+  }
+
   try {
     const customerInfo = await Purchases.getCustomerInfo();
     const entitlement = customerInfo.entitlements.active[ENTITLEMENT_ID];

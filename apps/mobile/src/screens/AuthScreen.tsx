@@ -21,6 +21,7 @@ import { useAppStore } from '../store/useAppStore';
 import { signInWithApple, signInWithEmail, verifyOtp } from '../services/supabase';
 import { setUserId } from '../services/subscriptions';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
+import { isDemoReviewAccount, isDemoReviewOtp, DEMO_CONFIG } from '../config/security';
 
 type AuthScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Auth'>;
@@ -32,6 +33,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [loading, setLoading] = useState(false);
   const setUser = useAppStore((s) => s.setUser);
+  const setSubscription = useAppStore((s) => s.setSubscription);
 
   const handleAppleSignIn = async () => {
     try {
@@ -84,6 +86,17 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
 
     try {
       setLoading(true);
+
+      // Demo account bypass - don't send actual OTP
+      if (isDemoReviewAccount(email)) {
+        setShowOtpInput(true);
+        Alert.alert(
+          'Demo Account',
+          'Enter the demo verification code: 123456'
+        );
+        return;
+      }
+
       await signInWithEmail(email);
       setShowOtpInput(true);
       Alert.alert(
@@ -105,6 +118,22 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
 
     try {
       setLoading(true);
+
+      // Demo account bypass - create mock session
+      if (isDemoReviewOtp(email, otp)) {
+        const demoUserId = 'demo-review-user-' + Date.now();
+        setUser({
+          id: demoUserId,
+          email: DEMO_CONFIG.REVIEW_EMAIL,
+          createdAt: new Date().toISOString(),
+        });
+        // Grant premium access for demo account
+        setSubscription('annual', false, undefined);
+        console.log('[AuthScreen] Demo review account signed in with premium access');
+        navigation.replace('Home');
+        return;
+      }
+
       const { user } = await verifyOtp(email, otp);
 
       if (user) {

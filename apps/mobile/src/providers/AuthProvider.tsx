@@ -26,6 +26,7 @@ import {
 } from '../services/auth';
 import { useAppStore } from '../store/useAppStore';
 import { setAnalyticsUserId } from '../services/analytics';
+import { isDemoReviewAccount } from '../config/security';
 
 // ============================================
 // Types
@@ -59,6 +60,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
 
   const storeSetUser = useAppStore((s) => s.setUser);
+  const setSubscription = useAppStore((s) => s.setSubscription);
 
   // Map Supabase user to app user
   const syncUserToStore = useCallback(
@@ -70,12 +72,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
           createdAt: supabaseUser.created_at,
         });
         setAnalyticsUserId(supabaseUser.id);
+
+        // Grant premium access for App Store review demo account
+        if (isDemoReviewAccount(supabaseUser.email)) {
+          setSubscription('annual', false, undefined);
+          console.log('[AuthProvider] Demo review account - premium access granted');
+        }
       } else {
         storeSetUser(null);
         setAnalyticsUserId(null);
       }
     },
-    [storeSetUser]
+    [storeSetUser, setSubscription]
   );
 
   // Initialize auth state on mount

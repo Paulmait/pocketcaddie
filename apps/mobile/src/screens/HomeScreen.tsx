@@ -23,11 +23,11 @@ import { useProgressTracking } from '../hooks/useProgressTracking';
 import { useNetworkStore } from '../services/network';
 import { colors, spacing, typography, borderRadius } from '../constants/theme';
 
-// Success stories for social proof
-const SUCCESS_STORIES = [
-  { name: 'Mike T.', sessions: 3, improvement: 'Fixed grip issue' },
-  { name: 'Sarah K.', sessions: 5, improvement: 'Eliminated over-the-top swing' },
-  { name: 'James R.', sessions: 2, improvement: 'Corrected open clubface' },
+// Example improvements users can achieve (illustrative examples)
+const IMPROVEMENT_EXAMPLES = [
+  { name: 'Grip Fix', sessions: 3, improvement: 'Open clubface correction' },
+  { name: 'Path Fix', sessions: 5, improvement: 'Out-to-in swing path' },
+  { name: 'Setup Fix', sessions: 2, improvement: 'Alignment issues' },
 ];
 
 type HomeScreenProps = {
@@ -103,7 +103,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </Text>
           <View style={styles.titleRow}>
             <Text style={styles.title}>Fix Your Slice</Text>
-            <Text style={styles.tagline}>America&apos;s #1 Slice Fixer</Text>
+            <Text style={styles.tagline}>AI-Powered Swing Analysis</Text>
           </View>
         </View>
         <View style={styles.headerRight}>
@@ -238,27 +238,27 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </View>
         )}
 
-        {/* Success Stories - Social Proof */}
+        {/* What You Can Fix - Feature Examples */}
         <View style={styles.successSection}>
-          <Text style={styles.sectionTitle}>Success Stories</Text>
+          <Text style={styles.sectionTitle}>What You Can Fix</Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={styles.successScroll}
           >
-            {SUCCESS_STORIES.map((story, index) => (
+            {IMPROVEMENT_EXAMPLES.map((example, index) => (
               <GlassCard key={index} style={styles.successCard}>
                 <View style={styles.successHeader}>
                   <View style={styles.successAvatar}>
-                    <Text style={styles.successInitial}>{story.name.charAt(0)}</Text>
+                    <Ionicons name="checkmark" size={18} color="white" />
                   </View>
-                  <Text style={styles.successName}>{story.name}</Text>
+                  <Text style={styles.successName}>{example.name}</Text>
                 </View>
-                <Text style={styles.successImprovement}>{story.improvement}</Text>
+                <Text style={styles.successImprovement}>{example.improvement}</Text>
                 <View style={styles.successMeta}>
-                  <Ionicons name="checkmark-circle" size={14} color={colors.status.success} />
+                  <Ionicons name="time-outline" size={14} color={colors.status.success} />
                   <Text style={styles.successSessions}>
-                    Fixed in {story.sessions} sessions
+                    Typical: {example.sessions} sessions
                   </Text>
                 </View>
               </GlassCard>
@@ -293,7 +293,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         {/* Community Stats */}
         <View style={styles.communityStats}>
           <Text style={styles.communityText}>
-            Join 10,000+ golfers who have improved their slice
+            Analyze your swing and start improving today
           </Text>
         </View>
       </ScrollView>

@@ -21,7 +21,7 @@ const __DEV__ = process.env.NODE_ENV === 'development' || process.env.EXPO_PUBLI
 
 // Singleton state for feature flags
 let globalFlags: FeatureFlags = getDefaultFeatureFlags(__DEV__);
-let listeners: Set<() => void> = new Set();
+const listeners: Set<() => void> = new Set();
 
 /**
  * Load feature flags from storage

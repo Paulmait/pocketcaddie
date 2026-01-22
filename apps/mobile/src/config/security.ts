@@ -47,6 +47,29 @@ export const AUTH_CONFIG = {
   MIN_PASSWORD_LENGTH: 8,
 };
 
+// App Store Review Demo Account
+// This email receives automatic premium access for Apple App Store review
+export const DEMO_CONFIG = {
+  // Demo account email for App Store review
+  REVIEW_EMAIL: 'appstore-review@cienrios.com',
+  // Demo OTP code for App Store review (bypasses email verification)
+  REVIEW_OTP: '123456',
+  // Whether demo mode is enabled (set to false for non-review builds)
+  ENABLED: true,
+};
+
+// Check if email is the demo review account
+export const isDemoReviewAccount = (email: string | null | undefined): boolean => {
+  if (!DEMO_CONFIG.ENABLED || !email) return false;
+  return email.toLowerCase() === DEMO_CONFIG.REVIEW_EMAIL.toLowerCase();
+};
+
+// Check if OTP is the demo review OTP for the demo account
+export const isDemoReviewOtp = (email: string, otp: string): boolean => {
+  if (!DEMO_CONFIG.ENABLED) return false;
+  return isDemoReviewAccount(email) && otp === DEMO_CONFIG.REVIEW_OTP;
+};
+
 // Sanitization helpers
 export const sanitizeInput = (input: string): string => {
   if (typeof input !== 'string') return '';
