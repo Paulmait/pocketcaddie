@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { logDrillCompletion } from '../services/supabase';
+import { getDrillById } from '../data/drillLibrary';
 
 export interface DrillPracticeRecord {
   drillId: string;
@@ -157,7 +159,19 @@ export const useAppStore = create<AppState>()(
       setIsAnalyzing: (analyzing) =>
         set({ isAnalyzing: analyzing }),
 
-      logDrillPractice: (drillId, durationMinutes, notes) =>
+      logDrillPractice: (drillId, durationMinutes, notes) => {
+        // Sync to Supabase in background (if user is authenticated)
+        const drill = getDrillById(drillId);
+        if (drill) {
+          logDrillCompletion({
+            drill_id: drillId,
+            drill_name: drill.name,
+            duration_minutes: durationMinutes,
+            notes,
+          }).catch((err) => console.log('[Store] Drill sync failed (offline?):', err));
+        }
+
+        // Always update local state
         set((state) => ({
           drillPracticeLog: [
             {
@@ -168,7 +182,8 @@ export const useAppStore = create<AppState>()(
             },
             ...state.drillPracticeLog,
           ],
-        })),
+        }));
+      },
 
       clearAllData: () => set(initialState),
     }),

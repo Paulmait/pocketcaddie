@@ -135,3 +135,85 @@ export const getVideoUrl = async (path: string) => {
 
   return data.publicUrl;
 };
+
+// Drill tracking helpers
+export interface DrillCompletion {
+  id?: string;
+  user_id?: string;
+  drill_id: string;
+  drill_name: string;
+  duration_minutes: number;
+  notes?: string;
+  completed_at?: string;
+}
+
+export const logDrillCompletion = async (completion: Omit<DrillCompletion, 'id' | 'user_id' | 'completed_at'>) => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data, error } = await supabase
+    .from('drill_completions')
+    .insert({
+      user_id: user.id,
+      drill_id: completion.drill_id,
+      drill_name: completion.drill_name,
+      duration_minutes: completion.duration_minutes,
+      notes: completion.notes,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error('[Supabase] Error logging drill completion:', error);
+    return null;
+  }
+  return data;
+};
+
+export const getDrillCompletions = async (limit = 50) => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return [];
+
+  const { data, error } = await supabase
+    .from('drill_completions')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('completed_at', { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error('[Supabase] Error fetching drill completions:', error);
+    return [];
+  }
+  return data || [];
+};
+
+export const getDrillStats = async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { totalCompletions: 0, totalMinutes: 0, drillCounts: {} };
+
+  const { data, error } = await supabase
+    .from('drill_completions')
+    .select('drill_id, drill_name, duration_minutes')
+    .eq('user_id', user.id);
+
+  if (error) {
+    console.error('[Supabase] Error fetching drill stats:', error);
+    return { totalCompletions: 0, totalMinutes: 0, drillCounts: {} };
+  }
+
+  const completions = data || [];
+  const drillCounts: Record<string, number> = {};
+  let totalMinutes = 0;
+
+  completions.forEach((c) => {
+    drillCounts[c.drill_id] = (drillCounts[c.drill_id] || 0) + 1;
+    totalMinutes += c.duration_minutes || 0;
+  });
+
+  return {
+    totalCompletions: completions.length,
+    totalMinutes,
+    drillCounts,
+  };
+};
