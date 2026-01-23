@@ -86,23 +86,80 @@ export async function getBiometricUser(): Promise<BiometricUser | null> {
 
 /**
  * Enable biometric login for a user
+ * Returns an object with success status and error details
  */
-export async function enableBiometric(user: BiometricUser): Promise<boolean> {
+export async function enableBiometric(user: BiometricUser): Promise<{
+  success: boolean;
+  error?: string;
+  errorCode?: string;
+}> {
   try {
-    // First verify biometrics work
-    const result = await authenticate('Enable biometric login');
+    // Re-check biometric availability before attempting
+    const supported = await isBiometricSupported();
+    if (!supported) {
+      return {
+        success: false,
+        error: 'Your device does not support biometric authentication.',
+        errorCode: 'not_supported',
+      };
+    }
+
+    const enrolled = await isBiometricEnrolled();
+    if (!enrolled) {
+      const biometricName = await getBiometricTypeName();
+      return {
+        success: false,
+        error: `${biometricName} is not set up on this device. Please enable it in your device Settings > ${biometricName} & Passcode.`,
+        errorCode: 'not_enrolled',
+      };
+    }
+
+    // Now verify biometrics work
+    const biometricName = await getBiometricTypeName();
+    const result = await authenticate(`Enable ${biometricName} login`);
+
     if (!result.success) {
-      return false;
+      // Handle specific error types
+      if (result.error === 'user_cancel') {
+        return {
+          success: false,
+          error: 'Authentication was cancelled.',
+          errorCode: 'cancelled',
+        };
+      }
+      if (result.error === 'user_fallback') {
+        return {
+          success: false,
+          error: 'Please use biometric authentication to enable this feature.',
+          errorCode: 'fallback',
+        };
+      }
+      if (result.error === 'lockout') {
+        return {
+          success: false,
+          error: `${biometricName} is locked. Please unlock your device first.`,
+          errorCode: 'lockout',
+        };
+      }
+      return {
+        success: false,
+        error: `${biometricName} authentication failed. Please try again.`,
+        errorCode: 'auth_failed',
+      };
     }
 
     // Store user credentials securely
     await SecureStore.setItemAsync(BIOMETRIC_USER_KEY, JSON.stringify(user));
     await SecureStore.setItemAsync(BIOMETRIC_ENABLED_KEY, 'true');
 
-    return true;
+    return { success: true };
   } catch (error) {
     console.error('[Biometrics] Enable error:', error);
-    return false;
+    return {
+      success: false,
+      error: 'An unexpected error occurred. Please try again.',
+      errorCode: 'unknown',
+    };
   }
 }
 

@@ -115,19 +115,22 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
 
       if (value) {
         // Enable biometrics
-        const success = await enableBiometric({
+        const result = await enableBiometric({
           id: user.id,
           email: user.email || '',
         });
 
-        if (success) {
+        if (result.success) {
           setBiometricEnabled(true);
           Alert.alert('Success', `${biometricType} login enabled!`);
         } else {
-          Alert.alert(
-            `${biometricType} Setup Failed`,
-            `Please authenticate with ${biometricType} to enable quick sign-in. Make sure ${biometricType} is set up in your device settings.`
-          );
+          // Don't show alert for user cancellation
+          if (result.errorCode !== 'cancelled') {
+            Alert.alert(
+              `${biometricType} Setup Failed`,
+              result.error || `Please authenticate with ${biometricType} to enable quick sign-in.`
+            );
+          }
         }
       } else {
         // Disable biometrics
