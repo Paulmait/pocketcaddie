@@ -37,7 +37,6 @@
       "package": "com.cienrios.pocketcaddieai"
     },
     "plugins": [
-      "expo-router",
       "expo-apple-authentication",
       [
         "expo-local-authentication",
@@ -58,9 +57,6 @@
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    },
     "extra": {
       "eas": {
         "projectId": "14bd2c65-383f-4be2-9ef2-569ce481b3d4"

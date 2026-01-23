@@ -33,7 +33,8 @@
       "env": {
         "APP_VARIANT": "production",
         "EXPO_PUBLIC_SUPABASE_URL": "https://xzuadnexwldcdoluuqjv.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6dWFkbmV4d2xkY2RvbHV1cWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2NjU4MDYsImV4cCI6MjA4MzI0MTgwNn0.oK058-Y8bVCrN5RqqLYZoxsM4-G357qLKIom3blqHb8"
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh6dWFkbmV4d2xkY2RvbHV1cWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc2NjU4MDYsImV4cCI6MjA4MzI0MTgwNn0.oK058-Y8bVCrN5RqqLYZoxsM4-G357qLKIom3blqHb8",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "YOUR_REVENUECAT_IOS_KEY"
       },
       "ios": {
         "simulator": false,

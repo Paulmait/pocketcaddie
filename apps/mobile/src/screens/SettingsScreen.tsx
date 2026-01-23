@@ -105,7 +105,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
   }, []);
 
   const handleToggleBiometric = async (value: boolean) => {
-    if (!user) return;
+    if (!user) {
+      Alert.alert('Sign In Required', 'Please sign in first to enable biometric login.');
+      return;
+    }
 
     try {
       setTogglingBiometric(true);
@@ -121,7 +124,10 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
           setBiometricEnabled(true);
           Alert.alert('Success', `${biometricType} login enabled!`);
         } else {
-          Alert.alert('Failed', `Could not enable ${biometricType}. Please try again.`);
+          Alert.alert(
+            `${biometricType} Setup Failed`,
+            `Please authenticate with ${biometricType} to enable quick sign-in. Make sure ${biometricType} is set up in your device settings.`
+          );
         }
       } else {
         // Disable biometrics
@@ -129,8 +135,12 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ navigation }) =>
         setBiometricEnabled(false);
         Alert.alert('Disabled', `${biometricType} login has been disabled.`);
       }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to update biometric settings.');
+    } catch (error: any) {
+      console.error('[Settings] Biometric toggle error:', error);
+      Alert.alert(
+        'Error',
+        error?.message || 'Failed to update biometric settings. Please try again.'
+      );
     } finally {
       setTogglingBiometric(false);
     }

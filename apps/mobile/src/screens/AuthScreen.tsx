@@ -303,6 +303,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
                   keyboardType="email-address"
                   autoCapitalize="none"
                   autoCorrect={false}
+                  textContentType="emailAddress"
+                  autoComplete="email"
                 />
                 <Button
                   title="Continue with Email"
@@ -324,6 +326,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
                   secureTextEntry
                   autoCapitalize="none"
                   autoCorrect={false}
+                  textContentType="password"
+                  autoComplete="password"
                 />
                 <Button
                   title="Sign In"
