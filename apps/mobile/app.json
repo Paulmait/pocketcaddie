@@ -12,12 +12,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#0B0F14"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "newArchEnabled": false,
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.cienrios.pocketcaddieai",
-      "buildNumber": "1",
+      "buildNumber": "4",
       "infoPlist": {
         "NSCameraUsageDescription": "SliceFix AI needs camera access to record your golf swing for analysis.",
         "NSPhotoLibraryUsageDescription": "SliceFix AI needs photo library access to select swing videos for analysis.",
