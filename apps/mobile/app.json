@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.cienrios.pocketcaddieai",
-      "buildNumber": "4",
+      "buildNumber": "6",
       "infoPlist": {
         "NSCameraUsageDescription": "SliceFix AI needs camera access to record your golf swing for analysis.",
         "NSPhotoLibraryUsageDescription": "SliceFix AI needs photo library access to select swing videos for analysis.",

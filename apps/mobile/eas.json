@@ -25,8 +25,7 @@
       },
       "ios": {
         "simulator": false,
-        "resourceClass": "m-medium",
-        "image": "latest"
+        "resourceClass": "m-medium"
       }
     },
     "production": {
@@ -40,8 +39,7 @@
       "ios": {
         "simulator": false,
         "resourceClass": "m-medium",
-        "buildConfiguration": "Release",
-        "image": "latest"
+        "buildConfiguration": "Release"
       }
     }
   },
