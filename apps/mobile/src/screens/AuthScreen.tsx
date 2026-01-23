@@ -8,6 +8,8 @@ import {
   Platform,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Keyboard,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -44,8 +46,19 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const [biometricAvailable, setBiometricAvailable] = useState(false);
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [biometricType, setBiometricType] = useState('Biometrics');
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
   const setUser = useAppStore((s) => s.setUser);
   const setSubscription = useAppStore((s) => s.setSubscription);
+
+  // Track keyboard visibility
+  useEffect(() => {
+    const showSub = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    const hideSub = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   // Check biometric availability on mount
   useEffect(() => {
@@ -248,14 +261,20 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.content}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        <View style={styles.header}>
-          <Ionicons name="golf" size={64} color={colors.primary.light} />
-          <Text style={styles.title}>SliceFix AI</Text>
-          <Text style={styles.subtitle}>Sign in to save your progress</Text>
-        </View>
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.header}>
+            <Ionicons name="golf" size={64} color={colors.primary.light} />
+            <Text style={styles.title}>SliceFix AI</Text>
+            <Text style={styles.subtitle}>Sign in to save your progress</Text>
+          </View>
 
-        <View style={styles.authOptions}>
+          <View style={styles.authOptions}>
           {/* Biometric Login Button */}
           {biometricAvailable && biometricEnabled && (
             <TouchableOpacity
@@ -375,18 +394,21 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
               </>
             )}
           </GlassCard>
-        </View>
+          </View>
 
-        <View style={styles.footer}>
-          <Button
-            title="Skip for now"
-            onPress={handleSkip}
-            variant="ghost"
-          />
-          <Text style={styles.footerText}>
-            By continuing, you agree to our Terms of Service and Privacy Policy
-          </Text>
-        </View>
+          {!keyboardVisible && (
+            <View style={styles.footer}>
+              <Button
+                title="Skip for now"
+                onPress={handleSkip}
+                variant="ghost"
+              />
+              <Text style={styles.footerText}>
+                By continuing, you agree to our Terms of Service and Privacy Policy
+              </Text>
+            </View>
+          )}
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -399,7 +421,11 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
     paddingHorizontal: spacing.lg,
+    justifyContent: 'space-between',
   },
   header: {
     alignItems: 'center',
@@ -418,7 +444,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   authOptions: {
-    flex: 1,
+    marginTop: spacing.sm,
   },
   biometricButton: {
     flexDirection: 'row',
